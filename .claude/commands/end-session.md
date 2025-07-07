@@ -17,11 +17,13 @@ Complete your development session with proper Git workflow, progress tracking, a
 
 3. **Push to Feature Branch**
    - Attempt push: `git push origin [current-branch]`
-   - If authentication fails, provide manual command:
+   - If authentication fails, provide manual commands:
      ```bash
-     # Manual push command for user to run:
+     # Manual push commands for user to run:
+     git checkout [current-branch]  # Ensure correct branch
      git push -u origin [current-branch]
      ```
+   - Always include checkout to prevent confusion
    - Ensure all work is safely stored on GitHub
 
 4. **Update Progress Tracking**
