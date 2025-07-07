@@ -23,6 +23,14 @@ Complete your development session with proper Git workflow, progress tracking, a
      git checkout [current-branch]  # Ensure correct branch
      git push -u origin [current-branch]
      ```
+   - If you updated documentation or shared interfaces:
+     ```bash
+     # Also merge to develop for other agents:
+     git checkout develop
+     git pull origin develop
+     git merge [current-branch]
+     git push origin develop
+     ```
    - Always include checkout to prevent confusion
    - Ensure all work is safely stored on GitHub
 

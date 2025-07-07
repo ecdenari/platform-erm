@@ -171,12 +171,20 @@ Remember: Platform-ERM is building the future of landscape business management a
    - `/docs/tracking/completion-log.md` (current work status and completed tasks)
    - `/docs/features/aspire-workflow-hierarchy.md` (if working on workflow features)
 
-2. **Check Current Work Status**:
+2. **Sync with Develop Branch** (CRITICAL):
+   ```bash
+   git fetch origin
+   git merge origin/develop
+   ```
+   - This ensures you have latest documentation, API contracts, and shared interfaces
+   - See `/docs/development/git-coordination-workflow.md` for detailed workflow
+
+3. **Check Current Work Status**:
    - Use `TodoRead` tool to check existing todos and current work phase
    - Review completion-log.md to understand what has been completed
    - Identify where to continue or what new work is needed
 
-3. **Follow Work Coordination Rules**:
+4. **Follow Work Coordination Rules**:
    - **Always use TodoWrite/TodoRead** for multi-step tasks
    - **Mark todos in_progress** when starting work, **completed** when finished
    - **Only one todo in_progress at a time** - complete current work before starting new
@@ -408,6 +416,37 @@ The UI design system consists of:
 4. **End of Session**: 
    - Push all changes to feature branch
    - Update todos and documentation if significant work completed
+
+### API Contract Coordination (CRITICAL)
+
+When frontend and backend agents need to coordinate on API contracts:
+
+1. **Create Integration Branch**:
+   ```bash
+   git checkout develop
+   git checkout -b integration/[feature]-api-contracts
+   ```
+
+2. **Both Agents Work Together**:
+   - **Agent 2**: Creates DTOs in `/backend/src/PlatformERM.Application/DTOs/`
+   - **Agent 1**: Creates matching TypeScript in `/frontend/src/types/`
+   - Both push/pull frequently to stay in sync
+
+3. **Merge When Stable**:
+   ```bash
+   git checkout develop
+   git merge integration/[feature]-api-contracts
+   git push origin develop
+   ```
+
+4. **Update Feature Branches**:
+   ```bash
+   # Each agent syncs their feature branch
+   git checkout feature/[your-branch]
+   git merge origin/develop
+   ```
+
+**See `/docs/development/git-coordination-workflow.md` for complete coordination patterns.**
 
 5. **Cross-Agent Issues**: Use GitHub Issues with `coordination` label and @mentions
 
