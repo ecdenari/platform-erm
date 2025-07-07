@@ -665,6 +665,9 @@ This visual identification helps prevent agent confusion in multi-terminal envir
 - **Reduced Ramp-up Time**: No need to reconstruct previous thinking
 - **Knowledge Retention**: Technical insights preserved between sessions
 
+### Session System Maintenance
+The `.claude` directory is version controlled and shared across all branches. For details on maintaining and updating session management files, see `/docs/development/session-management-guide.md`.
+
 ### Agent Assignment Management
 
 Platform-ERM supports dynamic agent assignment transitions to optimize resource allocation and module development flow.
