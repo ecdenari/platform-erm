@@ -459,7 +459,9 @@ When frontend and backend agents need to coordinate on API contracts:
    git merge origin/develop
    ```
 
-**See `/docs/development/git-coordination-workflow.md` for complete coordination patterns.**
+**See:**
+- `/docs/development/git-coordination-workflow.md` for coordination patterns
+- `/docs/development/continuous-integration-workflow.md` for hourly integration requirements
 
 5. **Cross-Agent Issues**: Use GitHub Issues with `coordination` label and @mentions
 

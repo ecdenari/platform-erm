@@ -23,24 +23,35 @@ Complete your development session with proper Git workflow, progress tracking, a
      git checkout [current-branch]  # Ensure correct branch
      git push -u origin [current-branch]
      ```
-   - If you updated documentation or shared interfaces:
+
+4. **Check for Integration Needs**
+   - Check if shared files were modified:
      ```bash
-     # Also merge to develop for other agents:
+     git diff develop...HEAD --name-only | grep -E "(shared/|\.types\.ts|api/|frontend/src/types/|backend/.*Dto)"
+     ```
+   - If shared files detected, integrate immediately:
+     ```bash
+     # Integration needed! Merge to develop:
      git checkout develop
      git pull origin develop
-     git merge [current-branch]
+     git merge [current-branch] --no-ff -m "integrate: [module] shared changes for cross-agent visibility"
      git push origin develop
+     git checkout [current-branch]
      ```
-   - Always include checkout to prevent confusion
-   - Ensure all work is safely stored on GitHub
+   - Integration triggers:
+     - Any `*.types.ts` files (TypeScript interfaces)
+     - Files in `/shared/` directory
+     - API client changes in `/frontend/src/api/`
+     - DTO changes in backend
+     - Database migrations
 
-4. **Update Progress Tracking**
+5. **Update Progress Tracking**
    - Mark completed todos as done using TodoWrite
    - Update completion-log.md if significant milestones reached
    - Document next steps for tomorrow's session
    - Note any cross-agent coordination needed
 
-5. **Capture Session Context**
+6. **Capture Session Context**
    Create/update your session context file at `.claude/sessions/YYYY-MM-DD-agent[X].md` with:
 
    **Current Work Status:**
@@ -70,7 +81,7 @@ Complete your development session with proper Git workflow, progress tracking, a
    - API contracts or interfaces changed
    - Coordination needed
 
-6. **Session Summary**
+7. **Session Summary**
    - Confirm all changes are committed and pushed
    - Verify todos reflect current status
    - Session context file created/updated
