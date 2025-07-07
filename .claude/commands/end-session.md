@@ -16,7 +16,12 @@ Complete your development session with proper Git workflow, progress tracking, a
      - `docs(scope): description` for documentation
 
 3. **Push to Feature Branch**
-   - Push current branch: `git push origin [current-branch]`
+   - Attempt push: `git push origin [current-branch]`
+   - If authentication fails, provide manual command:
+     ```bash
+     # Manual push command for user to run:
+     git push -u origin [current-branch]
+     ```
    - Ensure all work is safely stored on GitHub
 
 4. **Update Progress Tracking**

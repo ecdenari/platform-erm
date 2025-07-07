@@ -136,6 +136,15 @@ When generating code:
    - API Direct: https://localhost:59818/api/internal/properties
    - Swagger Docs: https://localhost:59818/swagger
 
+### Git Push Authentication
+Due to environment limitations, agents cannot push to GitHub directly. When completing work:
+1. Agent will commit changes locally
+2. Agent will provide manual push command
+3. User must run the push command:
+   ```bash
+   git push -u origin [branch-name]
+   ```
+
 ### Database Connection
 - PostgreSQL runs on default port 5432
 - Connection configured in backend `.env` file
