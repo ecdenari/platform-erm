@@ -665,11 +665,12 @@ Before starting any new feature:
 Use `/project:end-session` to complete your development session with proper Git workflow and progress tracking.
 
 ### Available Commands
-- `/project:end-session` - Complete session with commit, push, and progress updates
+- `/project:end-session` - Complete session with commit, push, and integration check
 - `/project:start-session-agent1` - Agent 1 startup with Properties context restoration
 - `/project:start-session-agent2` - Agent 2 startup with system coordination context
 - `/project:start-session-agent3` - Agent 3 startup with integration testing context
 - `/project:switch-agent-assignment` - Transition agent to new module/feature assignment
+- `/project:integration-check` - Check if changes need integration to develop
 
 For branch safety verification, see `/docs/development/branch-safety-guide.md`.
 
