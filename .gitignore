@@ -307,6 +307,28 @@ temp/
 logs
 *.log
 
+# Visual Studio source control
+*.vspscc
+*.vssscc
+*.pubxml.user
+
+# HTTP request files
+*.http
+
+# Environment files (stored in OneDrive instead)
+.env
+.env.*
+backend/.env
+frontend/.env
+appsettings.Development.json
+
+# Backup directories from sync
+.env-backup-*
+
+# Keep sync scripts
+!sync-env.ps1
+!sync-env.sh
+
 # OS generated files
 .DS_Store
 .DS_Store?

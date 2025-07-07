@@ -1,55 +1,37 @@
 ---
-name: Feature Request
-about: Suggest a new feature for Platform-ERM
+name: Feature request
+about: Suggest an idea for Platform-ERM
 title: '[FEATURE] '
-labels: feature
+labels: enhancement
 assignees: ''
 ---
 
-## Feature Description
+**Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-## Proposed Solution
+**Describe the solution you'd like**
 A clear and concise description of what you want to happen.
 
-## Alternative Solutions
+**Describe alternatives you've considered**
 A clear and concise description of any alternative solutions or features you've considered.
 
-## Business Value
-Explain how this feature would benefit Platform-ERM users:
-- **Aspire improvement**: How does this solve Aspire limitations?
-- **User impact**: Which users benefit and how?
-- **ROI potential**: Time savings, efficiency gains, etc.
-- **Competitive advantage**: How this differentiates from Aspire/LMN
+**Business Value**
+- How does this improve upon Aspire ERP limitations?
+- How does this differentiate from LMN?
+- What value does it bring to landscape businesses?
 
-## Technical Considerations
-- **Module affected**: Properties/Contacts/Purchase Orders/Job Costing/etc.
-- **Complexity**: Low/Medium/High
-- **Dependencies**: Any other features this depends on
-- **Database changes**: Required schema modifications
-- **API changes**: New endpoints or modifications needed
+**Technical Considerations**
+- [ ] Multi-tenant compatible
+- [ ] Mobile-friendly
+- [ ] API changes required
+- [ ] Database schema changes
+- [ ] Performance impact
 
-## UI/UX Considerations
-- **Three-platform approach**: How would ServiceTitan/LMN/Aspire variants differ?
-- **Enterprise tokens**: Specific design token requirements
-- **Navigation impact**: Changes to three-level hierarchy
-- **Mobile considerations**: PWA requirements
+**Agent Assignment**
+Which agents would need to work on this?
+- [ ] Agent 1 (Frontend UI/UX)
+- [ ] Agent 2 (Backend/API)
+- [ ] Agent 3 (Mobile/Integration)
 
-## Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2  
-- [ ] Criterion 3
-
-## Agent Assignment
-- **Suggested agent**: Agent 1 (Frontend)/Agent 2 (Backend)/Agent 3 (Mobile)/Multiple
-- **Priority**: Critical/High/Medium/Low
-- **Estimated effort**: Small/Medium/Large
-- **Coordination needed**: Which agents need to coordinate
-
-## Implementation Notes
-- **Backend considerations**: API design, database schema
-- **Frontend considerations**: Component design, token usage
-- **Testing requirements**: Unit, integration, e2e tests needed
-
-## Additional Context
-Add any other context, mockups, or screenshots about the feature request here.
+**Additional context**
+Add any other context or screenshots about the feature request here.
