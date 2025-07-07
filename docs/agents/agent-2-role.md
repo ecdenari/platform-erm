@@ -27,7 +27,11 @@
 2. ✅ Check `/docs/tracking/completion-log.md` for current status
 3. ✅ Review pending GitHub/coordination tasks
 4. ✅ Use TodoRead to see active todos
-5. ✅ Create feature branch: `feature/backend-[description]` or `feature/docs-[description]`
+5. ✅ Create feature branch FROM DEVELOP:
+   ```bash
+   git checkout develop && git pull origin develop
+   git checkout -b feature/backend-[description] # or feature/docs-[description]
+   ```
 6. ✅ Verify multi-agent coordination system status
 
 ## Current Phase: System Coordination & Backend Development

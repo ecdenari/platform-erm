@@ -41,7 +41,11 @@
 2. ✅ Check `/docs/tracking/completion-log.md` for current status
 3. ✅ Review `/docs/development/feature-relationships.md` for integration points
 4. ✅ Use TodoRead to see active todos
-5. ✅ Create appropriate feature branch
+5. ✅ Create feature branch FROM DEVELOP:
+   ```bash
+   git checkout develop && git pull origin develop
+   git checkout -b feature/mobile-[description] # or integration/testing/etc
+   ```
 6. ✅ Verify mobile development environment
 
 ## Key Technologies

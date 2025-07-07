@@ -25,7 +25,11 @@
 2. ✅ Read `/docs/features/properties-feature-plan.md`
 3. ✅ Check `/docs/tracking/completion-log.md` for current status
 4. ✅ Use TodoRead to see active todos
-5. ✅ Create feature branch: `feature/properties-[description]`
+5. ✅ Create feature branch FROM DEVELOP: 
+   ```bash
+   git checkout develop && git pull origin develop
+   git checkout -b feature/properties-[description]
+   ```
 6. ✅ Verify enterprise token system setup
 
 ## Current Phase: Properties Frontend Components

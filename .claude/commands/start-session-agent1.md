@@ -20,6 +20,12 @@ Rename terminal window for clarity:
 2. **Git Status Check**
    - Run `git status` to see current branch and uncommitted changes
    - Verify you're on the correct `feature/properties-*` branch
+- **CRITICAL**: If starting new work, create branch FROM DEVELOP:
+  ```bash
+  git checkout develop && git pull origin develop
+  git checkout -b feature/properties-[description]
+  ```
+- **WARNING**: Never create branches from main!
    - Check if you need to pull latest from develop: `git pull origin develop`
 
 3. **Review Project Updates**

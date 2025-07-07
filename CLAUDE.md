@@ -399,14 +399,21 @@ The UI design system consists of:
    git checkout develop && git pull origin develop
    ```
 
-2. **Create Feature Branch**:
+2. **Create Feature Branch** (ALWAYS from develop, NEVER from main):
    ```bash
+   # CRITICAL: Always ensure you're on develop first
+   git checkout develop
+   git pull origin develop
+   
+   # THEN create your feature branch
    git checkout -b feature/[agent-scope]-[description]
    # Examples:
    # feature/properties-list-component
    # feature/backend-purchase-orders
    # feature/mobile-responsive-cards
    ```
+   
+   **⚠️ WARNING**: Never create feature branches from `main`. Always start from `develop`.
 
 3. **Work Progress**:
    - Commit frequently with descriptive messages

@@ -19,6 +19,12 @@ Rename terminal window for clarity:
 
 2. **System Status Check**
    - Run `git status` to see current branch and uncommitted changes
+   - **CRITICAL**: If starting new work, create branch FROM DEVELOP:
+     ```bash
+     git checkout develop && git pull origin develop
+     git checkout -b feature/backend-[description]
+     ```
+   - **WARNING**: Never create branches from main!
    - Check for any pending database migrations
    - Verify backend builds: `cd backend && dotnet build`
 
