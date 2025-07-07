@@ -38,6 +38,39 @@
 - Property Form Component with enterprise styling
 - Hierarchical contact management interfaces
 
+### Component Development Process
+
+**Step 1: Base Component**
+- Create functional component with core features
+- Use enterprise tokens for styling
+- Ensure TypeScript types are properly defined
+- Commit when component is working
+
+**Step 2: Three-Platform Iterations**
+1. **ServiceTitan Variant** (`ComponentNameServiceTitan.tsx`)
+   - Dense information display
+   - Minimal spacing (use `compact` tokens)
+   - Hover actions and inline operations
+   - Professional, technical aesthetic
+
+2. **LMN Variant** (`ComponentNameLMN.tsx`)
+   - Landscape-specific features
+   - Weather/seasonal considerations
+   - Mobile-friendly spacing
+   - Field worker optimizations
+
+3. **Aspire Variant** (`ComponentNameAspire.tsx`)
+   - Commercial B2B focus
+   - Hierarchical data display
+   - Enterprise workflow patterns
+   - Professional services aesthetic
+
+### Commit Requirements
+- **Commit Frequency**: After each working component/variant
+- **Never**: Leave uncommitted work at session end
+- **Always**: Use conventional commits: `feat(properties):`, `fix(properties-ui):`
+- **Session End**: Must use `/project:end-session` command
+
 ## Key Technologies
 - **Frontend**: React 18 + TypeScript + Vite
 - **Styling**: Tailwind CSS with enterpriseTokens.ts
@@ -153,6 +186,11 @@ What should I work on next in the Properties frontend development?
 - **Component Iterations**: `/docs/COMPONENT_ITERATIONS.md`
 - **Enterprise Tokens**: `/frontend/src/styles/enterpriseTokens.ts`
 - **Architecture Guide**: `/docs/development/architecture-guide.md`
+- **UI References**: https://github.com/ecdenari/software-references
+  - Use screenshots for platform-specific patterns
+  - Study ServiceTitan for density patterns
+  - Review LMN for landscape features
+  - Analyze Aspire for commercial workflows
 
 ## Session Management
 - **Start Session**: Use `/project:start-session-agent1` command for identity confirmation and context restoration
