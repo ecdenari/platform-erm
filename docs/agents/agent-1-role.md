@@ -10,7 +10,15 @@
 - **Primary Work**: Properties module frontend development
 - **Feature Plan**: `/docs/features/properties-feature-plan.md`
 - **Current Phase**: Building three-platform component variants using enterprise design tokens
+- **Branch Pattern**: `feature/properties-*`
 - **Coordination**: GitHub Issues for API needs with Agent 2
+- **Priority**: High - Foundation module for other features
+- **Timeline**: 2-3 weeks for core components
+
+## Assignment History
+- **2025-07-07**: Properties Frontend - Status: Active
+  - Started after backend API completion
+  - Focus on three-platform approach (ServiceTitan, LMN, Aspire)
 
 ## Startup Checklist
 1. ✅ Read CLAUDE.md startup protocol
@@ -145,5 +153,13 @@ What should I work on next in the Properties frontend development?
 - **Component Iterations**: `/docs/COMPONENT_ITERATIONS.md`
 - **Enterprise Tokens**: `/frontend/src/styles/enterpriseTokens.ts`
 - **Architecture Guide**: `/docs/development/architecture-guide.md`
+
+## Session Management
+- **Start Session**: Use `/project:start-session-agent1` command for identity confirmation and context restoration
+- **End Session**: Use `/project:end-session` command for automatic context capture
+- **Session Context**: Daily context files in `.claude/sessions/` preserve mental state and technical decisions
+- **Terminal Identity**: Startup command can rename terminal to "Frontend Agent 1 - Properties"
+- **Custom Commands**: Available in `.claude/commands/` directory
+- **Progress Tracking**: Update todos and push to feature branch before ending session
 
 This role definition ensures Agent 1 has complete context for Properties frontend development while maintaining coordination with other agents.

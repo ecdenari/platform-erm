@@ -104,6 +104,49 @@ When generating code:
 - API tests must verify both authentication methods
 - Frontend tests must include multi-tenant scenarios
 
+## Development Environment
+
+### Local Development Ports
+**Frontend (Vite React)**:
+- URL: http://localhost:5173
+- Command: `npm run dev` (from `/frontend` directory)
+- Auto-proxies `/api` requests to backend at http://localhost:5000
+
+**Backend API (.NET Core)**:
+- HTTP: http://localhost:59819
+- HTTPS: https://localhost:59818
+- Command: `dotnet run` (from `/backend/src/PlatformERM.API` directory)
+- Swagger UI: https://localhost:59818/swagger
+
+### Development Workflow
+1. **Start Backend First**:
+   ```bash
+   cd backend/src/PlatformERM.API
+   dotnet run
+   ```
+
+2. **Start Frontend**:
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+3. **Access Application**:
+   - Frontend: http://localhost:5173
+   - API Direct: https://localhost:59818/api/internal/properties
+   - Swagger Docs: https://localhost:59818/swagger
+
+### Database Connection
+- PostgreSQL runs on default port 5432
+- Connection configured in backend `.env` file
+- Ensure PostgreSQL service is running before starting backend
+
+### Multi-Agent Development Tips
+- Agent 1: Focus on http://localhost:5173 for UI development
+- Agent 2: Monitor https://localhost:59818/swagger for API testing
+- Use browser DevTools Network tab to verify API calls
+- Check console for CORS or proxy issues
+
 Remember: Platform-ERM is building the future of landscape business management as a true SaaS platform, not an add-on to existing systems.
 
 ## Agent Coordination Requirements
@@ -502,3 +545,136 @@ Every fresh session:
 4. **Continue assigned work** on appropriate feature branch
 
 This multi-agent coordination system ensures smooth parallel development while maintaining Platform-ERM's architectural integrity and preventing conflicts between concurrent development sessions.
+
+## Advanced Feature Management System
+
+### Feature Documentation Standards
+When working on new features, follow these documentation practices:
+
+1. **Check for Existing Documentation**: Always verify if feature documentation exists in `/docs/features/`
+2. **Create Feature Plans**: For new modules, create `docs/features/[feature-name]-plan.md` with:
+   - Business context and Aspire/LMN limitations addressed
+   - Technical approach and architecture
+   - Entity relationships and API design
+   - UI/UX requirements with three-platform variants
+   - Testing strategy and success metrics
+
+3. **Update Feature Relationships**: Maintain `/docs/development/feature-relationships.md` with:
+   - Dependencies on other features
+   - Features that this enables
+   - Cross-agent coordination requirements
+   - Implementation sequence
+
+### Epic Branch Management
+For complex features spanning multiple agents:
+
+```bash
+# Epic branch pattern for large features
+feature/epic-purchase-orders/
+├── feature/properties-po-integration     # Agent 1 work
+├── feature/backend-po-api                # Agent 2 work
+└── feature/mobile-po-workflow           # Agent 3 work
+
+# Integration branches for cross-agent coordination
+feature/integration-api-contracts/
+├── Agent 1 frontend API client updates
+└── Agent 2 backend contract changes
+```
+
+**Epic Branch Rules**:
+1. Create epic branch from `develop`
+2. Create agent-specific branches from epic branch
+3. Merge agent branches back to epic branch
+4. Integration test on epic branch
+5. Merge epic to `develop` when all agents complete
+
+### Feature Coordination Checklist
+Before starting any new feature:
+- [ ] Check `/docs/development/feature-relationships.md` for dependencies
+- [ ] Verify all prerequisite features are complete or in progress
+- [ ] Create GitHub coordination issue if cross-agent work needed
+- [ ] Document feature plan in `/docs/features/`
+- [ ] Update feature relationships document
+
+## Custom Slash Commands
+
+### End-of-Session Protocol
+Use `/project:end-session` to complete your development session with proper Git workflow and progress tracking.
+
+### Available Commands
+- `/project:end-session` - Complete session with commit, push, and progress updates
+- `/project:start-session-agent1` - Agent 1 startup with Properties context restoration
+- `/project:start-session-agent2` - Agent 2 startup with system coordination context
+- `/project:start-session-agent3` - Agent 3 startup with integration testing context
+- `/project:switch-agent-assignment` - Transition agent to new module/feature assignment
+
+### Creating Additional Commands
+Custom commands are stored in `.claude/commands/` directory as Markdown files. Each agent can create workflow-specific commands as needed.
+
+## Enhanced Session Management
+
+### Session Context System
+Platform-ERM uses a session context system to eliminate the "empty terminal memory" problem and enable seamless handoffs between development sessions.
+
+**Session Context Files**: Each agent maintains daily context files in `.claude/sessions/` that capture:
+- Current work status and progress percentage
+- Mental state and active problem-solving context
+- Technical decisions and architectural insights
+- Blockers, questions, and coordination needs
+- Specific next steps for seamless continuation
+
+**File Format**: `.claude/sessions/YYYY-MM-DD-agent[X].md`
+
+### Daily Workflow Integration
+
+**Starting a Session**:
+1. Use `/project:start-session-agent[X]` command for your agent number
+2. Command will guide you through context restoration
+3. Review previous session's mental state and progress
+4. Verify development environment readiness
+5. Continue exactly where you left off
+
+**Ending a Session**:
+1. Use `/project:end-session` command as usual
+2. Command now includes session context capture
+3. Document your mental state and key decisions
+4. Record specific next steps (not generic "continue work")
+5. Note any cross-agent coordination needs
+
+### Terminal Identity Management
+Startup commands optionally rename terminal windows for clear agent identification:
+- "Frontend Agent 1 - Properties"
+- "Backend Agent 2 - Systems"
+- "Mobile Agent 3 - Integration"
+
+This visual identification helps prevent agent confusion in multi-terminal environments.
+
+### Benefits of Session Context
+- **Seamless Handoffs**: Next session starts with full context
+- **Mental State Preservation**: Remember not just what, but why and how
+- **Better Coordination**: Cross-agent needs clearly documented
+- **Reduced Ramp-up Time**: No need to reconstruct previous thinking
+- **Knowledge Retention**: Technical insights preserved between sessions
+
+### Agent Assignment Management
+
+Platform-ERM supports dynamic agent assignment transitions to optimize resource allocation and module development flow.
+
+**Assignment Switching Process**:
+1. Use `/project:switch-agent-assignment` command
+2. Complete current work to logical stopping point
+3. Document transition context in session files
+4. Update agent role file with new assignment
+5. Preserve assignment history for reference
+
+**Assignment History Tracking**:
+- Each agent role file maintains complete assignment history
+- Transition reasons and handoff notes preserved
+- Cross-agent coordination requirements updated
+- Feature relationship dependencies adjusted
+
+**Benefits**:
+- Smooth transitions between modules
+- No loss of context during reassignments
+- Clear handoff documentation
+- Complete audit trail of agent work
