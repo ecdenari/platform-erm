@@ -1,0 +1,560 @@
+﻿@using PureGreenLandGroup.Utility.Constants
+@using PureGreenLandGroup.Utility.Enums
+@inject IHttpContextAccessor Accessor
+
+@model PureGreenLandGroup.Models.ViewModel.SiteControllerManagement.CreateControllerViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userInRole = @Accessor.HttpContext?.Session.GetString("LoggedUserRole")?.ToString() ?? string.Empty;
+
+    if (Model.ControllerViewModel.Id > 0)
+    {
+        ViewData["Title"] = "Update Controller";
+    }
+    else
+    {
+        ViewData["Title"] = "Create Controller";
+    }
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="controller" aria-selected="true">Controller</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="seasonal-tab" data-bs-toggle="tab" data-bs-target="#SeasonalAdjust" type="button" role="tab" aria-controls="sesional" aria-selected="false">Seasonal Adjust</button>
+    </li>
+</ul>
+
+<form asp-action="CreateSiteController" asp-controller="ControllersManager" method="post" id="CreateControllerForm" enctype="multipart/form-data">
+    <div class="tab-content" id="myTabContent">
+        <!--Create controller page tab-->
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <!--Hidden input-->
+            <input type="hidden" asp-for="@Model.PropertyViewModel.PropertId" />
+            <input type="hidden" id="ControllerId" asp-for="@Model.ControllerViewModel.Id" />
+            <input type="hidden" asp-for="@Model.ControllerViewModel.PropertyId" />
+            <div class="rightSection p-3">
+                <div class="d-flex justify-content-end m-2">
+                    @if (Model.ControllerViewModel.Id > 0)
+                    {
+                        if (@userInRole.ToLower() == UserRole.Admin.ToLower())
+                        {
+                            <a class="text-lg-center btn btn-success" id="ControllerEditableBtn" onclick="MakeControllerFormEditable()" style="display:none;"><i class="fas fa-edit" style="padding-right: 5px;"> </i> EDIT</a>
+                        }
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-9">
+                        <div class="row mb-3">
+                            <div class="form-group col">
+                                <label class="mb-1">Controller Name<span class="text-danger fw-bold">*</span></label>
+                                <input type="text" class="form-control format-input" placeholder="Controller Name" id="ControllerName" asp-for="@Model.ControllerViewModel.ControllerName" maxlength="200">
+                                <span asp-validation-for="@Model.ControllerViewModel.ControllerName" class="text-danger" style="font-size: smaller;"></span>
+                            </div>
+                            <div class="form-group col">
+                                <label class="mb-1">Manufacturer<span class="text-danger fw-bold">*</span> </label>
+                                <select asp-for="@Model.ControllerViewModel.ManufacturerId" class="form-select" onchange="BindModelDropdown(this,'0','controller')">
+                                    <option value="0" disabled>--select manufacturer--</option>
+                                    @foreach (var manufacturer in Model.ManufacturerList)
+                                    {
+                                        <option value="@manufacturer.Id">@manufacturer.ManufacturerName</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="@Model.ControllerViewModel.ManufacturerId" class="text-danger" style="font-size: smaller;"></span>
+                            </div>
+                            <div class="form-group col">
+                                <label class="mb-1">Model</label>
+                                <!--disable input on create new controller and enable on edit-->
+                                @if (Model.ControllerViewModel.Id > 0)
+                                {
+                                    <select asp-for="@Model.ControllerViewModel.ModelId" class="form-select ">
+                                        <option value="0">--select model--</option>
+                                        @foreach (var controllerModel in Model.ModelsList)
+                                        {
+                                            <option value="@controllerModel.Id">@controllerModel.ModelName</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select asp-for="@Model.ControllerViewModel.ModelId" class="form-select " disabled>
+                                        <option value="0">--select model--</option>
+                                        @foreach (var controllerModel in Model.ModelsList)
+                                        {
+                                            <option value="@controllerModel.Id">@controllerModel.ModelName</option>
+                                        }
+                                    </select>
+                                }
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="form-group col">
+                                <label class="mb-1">Water Source</label>
+                                <select asp-for="@Model.ControllerViewModel.WaterSourceId" class="form-select  ">
+                                    <option value="0">--select water source--</option>
+                                    @foreach (var waterSource in Model.WaterSourceList)
+                                    {
+                                        <option value="@waterSource.Id">@waterSource.WaterSourceName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col">
+                                <label class="mb-1">Location</label>
+                                <input type="text" asp-for="@Model.ControllerViewModel.Location" placeholder="Enter location" class="form-control " maxlength="200" />
+                            </div>
+                            <div class="form-group col">
+                                <label class="mb-1">Notes</label>
+                                <textarea type="text" asp-for="@Model.ControllerViewModel.Notes" placeholder="Enter notes" class="form-control " rows="1" maxlength="500"></textarea>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            
+                            <div class="form-group col-4">
+                                <div class="form-group ">
+                                    <div class="col">
+                                        <label class="mb-1">Wire Type<span class="text-danger fw-bold">*</span> </label>
+                                        <select class="form-select" asp-for="@Model.ControllerViewModel.ControllerType">
+                                            <option value="0" disabled>--select wire type--</option>
+                                            <option value="1">@ControllerType.ConventionalSystem</option>
+                                            <option value="2">@ControllerType.TwoWireSystem</option>
+                                        </select>
+                                        <span asp-validation-for="@Model.ControllerViewModel.ControllerType" class="text-danger" style="font-size: smaller;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-4 pt-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="checkbox" asp-for="@Model.ControllerViewModel.IsRainSensor">
+                                        <label class="mb-1" asp-for="@Model.ControllerViewModel.IsRainSensor">Rain Sensor</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="detailsAddItem">
+                                    <li class="mb-2 d-flex d-xl-block flex-column"><span> <strong>Property : </strong></span><a class="viewItem" href="#"> @Model.PropertyViewModel.PropertName</a></li>
+                                    <li class="d-flex d-xl-block flex-column">  <span><strong>Address :  </strong> </span> <span>@Model.PropertyViewModel.PropertAddress </span> </li>
+                                    <li class="text-end "></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="datainputs_item2 ">
+                    <div class="row" id="req_input_item2">
+                        @for (int i = 0; i < 4; i++)
+                        {
+                            <div class="col-xxl-3 col-md-6 mt-3">
+                                <div class="daysWeekItem ">
+                                    <div class="inputProgram">
+                                        <input type="hidden" asp-for="@Model.ProgramsListViewModel[i].Id" />
+                                        <input type="text" class="form-control" placeholder="@((char)('A' + i)) Program Name" asp-for="@Model.ProgramsListViewModel[i].ProgramName">
+                                    </div>
+                                    <div class="d-flex weeksItem align-items-center  text-center mt-2">
+                                        @for (int j = 0; j < 1; j++)
+                                        {
+                                            <div>
+                                                <p><label asp-for="@Model.ProgramsListViewModel[i].IsSunEnable" class="weekDaysCheckbox_labels">@WeekDays.Sun</label></p>
+                                                <input type="checkbox" asp-for="@Model.ProgramsListViewModel[i].IsSunEnable">
+                                            </div>
+                                            <div>
+                                                <p><label asp-for="@Model.ProgramsListViewModel[i].IsMonEnable" class="weekDaysCheckbox_labels">@WeekDays.Mon</label></p>
+                                                <input type="checkbox" asp-for="@Model.ProgramsListViewModel[i].IsMonEnable">
+                                            </div>
+                                            <div>
+                                                <p><label asp-for="@Model.ProgramsListViewModel[i].IsTueEnabled" class="weekDaysCheckbox_labels">@WeekDays.Tue</label></p>
+                                                <input type="checkbox" asp-for="@Model.ProgramsListViewModel[i].IsTueEnabled ">
+                                            </div>
+                                            <div>
+                                                <p><label asp-for="@Model.ProgramsListViewModel[i].IsWedEnabled" class="weekDaysCheckbox_labels">@WeekDays.Wed</label></p>
+                                                <input type="checkbox" asp-for="@Model.ProgramsListViewModel[i].IsWedEnabled ">
+                                            </div>
+                                            <div>
+                                                <p><label asp-for="@Model.ProgramsListViewModel[i].IsThuEnabled" class="weekDaysCheckbox_labels">@WeekDays.Thu</label></p>
+                                                <input type="checkbox" asp-for="@Model.ProgramsListViewModel[i].IsThuEnabled ">
+                                            </div>
+                                            <div>
+                                                <p><label asp-for="@Model.ProgramsListViewModel[i].IsFriEnabled" class="weekDaysCheckbox_labels">@WeekDays.Fri</label></p>
+                                                <input type="checkbox" asp-for="@Model.ProgramsListViewModel[i].IsFriEnabled ">
+                                            </div>
+                                            <div>
+                                                <p><label asp-for="@Model.ProgramsListViewModel[i].IsSatEnabled" class="weekDaysCheckbox_labels">@WeekDays.Sat</label></p>
+                                                <input type="checkbox" asp-for="@Model.ProgramsListViewModel[i].IsSatEnabled ">
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="timeSelectorItem">
+                                        <div id="req_input" class="datainputs">
+                                            <label>Program Start Time</label> <br>
+                                            <div class="container">
+                                                <div class="row programstarttime gy-1">
+                                                    <!--Timer 1-->
+                                                    <div class="form-group col-md-4 col-lg-6 col-xxl-4 px-0 pe-3">
+                                                        <div class="d-flex justify-content-inline gap-1">
+                                                            <div class="col-md-6">
+                                                                <select asp-for="@Model.ProgramsListViewModel[i].ProgramTimer1" class="form-control programStartTimer" style="height:40px;">
+                                                                    @foreach (var time in Model.ProgramStartTime)
+                                                                    {
+                                                                        <option value="@time.Value">@time.Value</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <select asp-for="@Model.ProgramsListViewModel[i].Timer1Median" style="height:40px;" class="form-control">
+                                                                    <option value="AM">AM</option>
+                                                                    <option value="PM">PM</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Timer 2-->
+                                                    <div class="form-group col-md-4 col-lg-6 col-xxl-4 px-0 pe-3">
+                                                        <div class="d-flex justify-content-inline gap-1">
+                                                            <div class="col-md-6">
+                                                                <select asp-for="@Model.ProgramsListViewModel[i].ProgramTimer2" class="form-control programStartTimer" style="height:40px;">
+                                                                    @foreach (var time in Model.ProgramStartTime)
+                                                                    {
+                                                                        <option value="@time.Value">@time.Value</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <select asp-for="@Model.ProgramsListViewModel[i].Timer2Median" style="height:40px;" class="form-control">
+                                                                    <option value="AM">AM</option>
+                                                                    <option value="PM">PM</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Timer 3-->
+                                                    <div class="form-group col-md-4 col-lg-6 col-xxl-4 px-0 pe-3 pe-xxl-0">
+                                                        <div class="d-flex justify-content-inline gap-1">
+                                                            <div class="col-md-6">
+                                                                <select asp-for="@Model.ProgramsListViewModel[i].ProgramTimer3" class="form-control programStartTimer" style="height:40px;">
+                                                                    @foreach (var time in Model.ProgramStartTime)
+                                                                    {
+                                                                        <option value="@time.Value">@time.Value</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <select asp-for="@Model.ProgramsListViewModel[i].Timer3Median" style="height:40px;" class="form-control">
+                                                                    <option value="AM">AM</option>
+                                                                    <option value="PM">PM</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="mt-2 border p-2 rounded-3">
+                    <details open>
+                        <summary>Zone</summary>
+                        <div id="req_input_item" class="datainputs_item table-responsive">
+                            <table class="table tableMainItem border" id="Zone_dynamic_table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Zone#</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Program A</th>
+                                        <th scope="col">Program B</th>
+                                        <th scope="col">Program C</th>
+                                        <th scope="col">Program D</th>
+                                        <th scope="col">Valve Size</th>
+                                        @*<th scope="col">Valve Manufacturer</th>*@
+                                        <th scope="col">Manufacturer</th>
+                                        <th scope="col">Flow Rate(GPM)</th>
+                                        <th scope="col">Sprinkler Type</th>
+                                        <th scope="col">Plant Type</th>
+                                        <th scope="col">Soil Type</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dynamic_body">
+                                    @if (Model.ControllerZonesList != null && Model.ControllerZonesList.Count > 0)
+                                    {
+                                        int i = 0;
+                                        @foreach (var ZonesViewModel in Model.ControllerZonesList)
+                                        {
+                                            <input type="hidden" asp-for="@Model.ControllerZonesList[i].Id" />
+                                            //zone row for the active zones
+                                            if (!ZonesViewModel.IsDeleted)
+                                            {
+                                                <tr class="dynamicZoneRows">
+                                                    <td class="col-1 ZoneName_Td">
+                                                        @if (Model.ControllerViewModel.Id > 0)
+                                                        {
+                                                            <input type="text" class="form-control" placeholder="Enter zone" asp-for="@Model.ControllerZonesList[i].ZoneLocationName" maxlength="50">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" class="form-control" placeholder="Enter zone" asp-for="@Model.ControllerZonesList[i].ZoneLocationName" maxlength="50" value="1">
+                                                        }
+                                                    </td>
+                                                    <td class="col-2 ZoneDescription_Td">
+                                                        <textarea type="text" class="form-control" placeholder="Enter zone description" asp-for="@Model.ControllerZonesList[i].Description" rows="1" maxlength="500"></textarea>
+                                                    </td>
+                                                    <td class="ZonePropgramA_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramA">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePropgramB_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramB">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePropgramC_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramC">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePropgramD_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramD">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneValveSizeInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ValveSizeId">
+                                                            @foreach (var valveSize in Model.ValveSizeList)
+                                                            {
+                                                                <option value="@valveSize.Id">@valveSize.ValveSizenames</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneValveManufacturerInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ManufacturerId">
+                                                            @foreach (var manufacturer in Model.ManufacturerList)
+                                                            {
+                                                                <option value="@manufacturer.Id">@manufacturer.ManufacturerName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneFlowRateInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].FlowRate">
+                                                            <option value="1">16</option>
+                                                            <option value="2">17</option>
+                                                            <option value="3">18</option>
+                                                            <option value="4">19</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneSprinklerInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].SprinkleTypeId">
+                                                            <option value="0">select sprinkler</option>
+                                                            @foreach (var sprinklerType in Model.SprinklerTypesList)
+                                                            {
+                                                                <option value="@sprinklerType.Id">@sprinklerType.SprinklerTypeName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePlantTypeInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].PlantTypeId">
+                                                            <option value="0">select plant</option>
+                                                            @foreach (var plantType in Model.PlantTypeList)
+                                                            {
+                                                                <option value="@plantType.Id">@plantType.PlantTypeName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneSoilTypeInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].SoilTypeId">
+                                                            <option value="0">select soil</option>
+                                                            @foreach (var soilType in Model.SoilTypeList)
+                                                            {
+                                                                <option value="@soilType.Id">@soilType.SoilTypeName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    @{
+                                                        int lastZoneCount = Model.ControllerZonesList.Count - 1;
+                                                        <td class="zoneActionBtns">
+                                                            <input type="hidden" asp-for="@Model.ControllerZonesList[i].IsDeleted" />
+                                                            @if (Model.ControllerViewModel.Id > 0 && i != 0)
+                                                            {
+                                                                <input type="button" class="deleteSavedZone btn btn-sm btn-outline-danger" value="X" />
+                                                            }
+                                                            @if (i == 0)
+                                                            {
+                                                                <a href="#" id="addmore_item" class="add_input_item  btn btn-sm btn-outline-success"><i class="fa fa-plus"></i></a>
+                                                            }
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            }
+                                            //zone row for the active zones
+                                            else
+                                            {
+                                                <tr class="dynamicZoneRows hideItem">
+                                                    <td class="col-1 ZoneName_Td">
+                                                        @if (Model.ControllerViewModel.Id > 0)
+                                                        {
+                                                            <input type="text" class="form-control" placeholder="Enter zone" asp-for="@Model.ControllerZonesList[i].ZoneLocationName" maxlength="50">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" class="form-control" placeholder="Enter zone" asp-for="@Model.ControllerZonesList[i].ZoneLocationName" maxlength="50" value="1">
+                                                        }
+                                                    </td>
+                                                    <td class="col-2 ZoneDescription_Td">
+                                                        <textarea type="text" class="form-control" placeholder="Enter zone description" asp-for="@Model.ControllerZonesList[i].Description" rows="1" maxlength="500"></textarea>
+                                                    </td>
+                                                    <td class="ZonePropgramA_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramA">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePropgramB_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramB">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePropgramC_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramC">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePropgramD_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ProgramD">
+                                                            @foreach (var time in Model.ProgramRunTime)
+                                                            {
+                                                                <option value="@time.Value">@time.Value</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneValveSizeInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].ValveSizeId">
+                                                            @foreach (var valveSize in Model.ValveSizeList)
+                                                            {
+                                                                <option value="@valveSize.Id">@valveSize.ValveSizenames</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneValveManufacturerInput_Td" asp-for="@Model.ControllerZonesList[i].ManufacturerId">
+                                                        <select class="timeZone seclectorItem form-select" >
+                                                            @foreach (var manufacturer in Model.ManufacturerList)
+                                                            {
+                                                                <option value="@manufacturer.Id">@manufacturer.ManufacturerName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneFlowRateInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].FlowRate">
+                                                            <option value="1">16</option>
+                                                            <option value="2">17</option>
+                                                            <option value="3">18</option>
+                                                            <option value="4">19</option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneSprinklerInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].SprinkleTypeId">
+                                                            <option value="0">select sprinkler</option>
+                                                            @foreach (var sprinklerType in Model.SprinklerTypesList)
+                                                            {
+                                                                <option value="@sprinklerType.Id">@sprinklerType.SprinklerTypeName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZonePlantTypeInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].PlantTypeId">
+                                                            <option value="0">select plant</option>
+                                                            @foreach (var plantType in Model.PlantTypeList)
+                                                            {
+                                                                <option value="@plantType.Id">@plantType.PlantTypeName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td class="ZoneSoilTypeInput_Td">
+                                                        <select class="timeZone seclectorItem form-select" asp-for="@Model.ControllerZonesList[i].SoilTypeId">
+                                                            <option value="0">select soil</option>
+                                                            @foreach (var soilType in Model.SoilTypeList)
+                                                            {
+                                                                <option value="@soilType.Id">@soilType.SoilTypeName</option>
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    @{
+                                                        int lastZoneCount = Model.ControllerZonesList.Count - 1;
+                                                        <td class="zoneActionBtns">
+                                                            <input type="hidden" asp-for="@Model.ControllerZonesList[i].IsDeleted" />
+                                                            @if (Model.ControllerViewModel.Id > 0 && i != 0)
+                                                            {
+                                                                <input type="button" class="deleteSavedZone btn btn-sm btn-outline-danger" value="X" />
+                                                            }
+                                                            @if (i == 0)
+                                                            {
+                                                                <a href="#" id="addmore_item" class="add_input_item  btn btn-sm btn-outline-success"><i class="fa fa-plus"></i></a>
+                                                            }
+                                                        </td>
+                                                    }
+                                                </tr>
+                                            }
+
+                                            i++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+
+                </div>
+                <div class="btnSaveItem text-end m-2">
+                    @if (Model.ControllerViewModel.Id > 0)
+                    {
+                        <button type="submit" class="btn btn-success" id="SaveControllerBtn" onclick="SubmitControllerDetails()">Update Controller</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success " id="SaveControllerBtn" onclick="SubmitControllerDetails()">Save Controller</button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!--controller seasonal adjusts page tab-->
+        <div class="tab-pane fade" id="SeasonalAdjust" role="tabpanel" aria-labelledby="seasonal-tab">
+            <div id=" SeasonalAdjustContainer">
+                @await Html.PartialAsync("_seasionalAdjustView", Model)
+            </div>
+        </div>
+    </div>
+</form>

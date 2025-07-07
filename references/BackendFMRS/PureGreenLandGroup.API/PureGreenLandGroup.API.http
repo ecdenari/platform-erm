@@ -1,0 +1,6 @@
+@PureGreenLandGroup.API_HostAddress = http://localhost:5032
+
+GET {{PureGreenLandGroup.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

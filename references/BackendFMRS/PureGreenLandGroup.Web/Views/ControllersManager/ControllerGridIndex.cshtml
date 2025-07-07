@@ -1,0 +1,163 @@
+﻿@model List<PureGreenLandGroup.Models.DTO.SP_Models.ControllerListVM>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Controllers List";
+    var userInRole = @Accessor.HttpContext?.Session.GetString("LoggedUserRole")?.ToString() ?? string.Empty;
+}
+@{
+    int propertyId = 0;
+    if (ViewBag.PropertyId != null)
+    {
+        propertyId = ViewBag.PropertyId;
+    }
+}
+
+<!--sucess messages-->
+@if (@ViewBag.StatusMessage == "1")
+{
+    @await Html.PartialAsync("_dataSavedMessage")
+}
+else if (@ViewBag.StatusMessage == "2")
+{
+    @await Html.PartialAsync("_dataUpdatedMessage")
+}
+else if (@ViewBag.StatusMessage == "0")
+{
+    @await Html.PartialAsync("_dataErrorMessage")
+}
+
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<div class="mt-3">
+    <div class="container-fluid ">
+        <div class="tableDetaildate">
+            <div class="row">
+                @if (Model != null)
+                {
+                    @if (@propertyId > 0)
+                    {
+                        <div class="col-auto">
+                            <a asp-controller="PropertiesManager" asp-action="PropertiesGridIndex" class="btn btn-success" onclick="RedirectToPropertiesGrid();">Back to Properties</a>
+                        </div>
+                        if (!string.IsNullOrEmpty(userInRole) && userInRole.ToLower() == "admin")
+                        {
+                            <div class="col-auto ms-auto">
+                                <a asp-action="CreateSiteController" asp-controller="ControllersManager" asp-route-propertyId="@propertyId" class="btn btn-success">Add Controller</a>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+            <div class="table-responsive pb-3">
+                <div class="table_list_data mt-3">
+                    <table class="table table-bordered table-striped" id="tblController">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Controller Name</th>
+                                <th>Zone</th>
+                                <th>Property</th>
+                                <th style="width:500px;">Address</th>
+                                <th>Model</th>
+                                <th>Manufacturer</th>
+                                <th>Rain Sensor</th>
+                                <th>Fault</th>
+                                <th>Inspection Issues</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Count() > 0)
+                            {
+                                int count = 1;
+                                @foreach (var controller in Model)
+                                {
+                                    <tr>
+                                        <td title="@controller.ControllerName" class="text-overflow-handler">
+                                            @controller.ControllerName
+                                        </td>
+                                        <td>@controller.ZoneCount</td>
+                                        <td>@controller.PropertyName</td>
+                                        <td title="@controller.Address" class="propertyAdd-text-overflow-handler">@controller.Address</td>
+                                        <td>@controller.ModelName</td>
+                                        <td>@controller.ManufacturerName</td>
+                                        @if (controller.IsRainSensor)
+                                        {
+                                            <td>Yes</td>
+                                        }
+                                        else
+                                        {
+                                            <td>No</td>
+                                        }
+                                        <td>@controller.FaultCount</td>
+                                        <td>@controller.TotalInspectionIssues</td>
+                                        <td>
+                                            @if (@Accessor.HttpContext.Session.GetString("LoggedUserRole") != null)
+                                            {
+                                                if (@Accessor.HttpContext.Session.GetString("LoggedUserRole").ToString().ToLower() == "admin")
+                                                {
+                                                    <a class="text-lg-center btn btn-success" asp-action="EditController" asp-controller="ControllersManager" asp-route-controllerId="@controller.Id" onclick="ShowControllerInReadonlyMode('@controller.Id')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+
+                                                    <a class="text-lg-center btn btn-success" asp-action="EditController" asp-controller="ControllersManager" asp-route-controllerId="@controller.Id" onclick="EditControllerForm();">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+
+                                                }
+                                                else
+                                                {
+                                                    <a class="text-lg-center btn btn-success" asp-action="EditController" asp-controller="ControllersManager" asp-route-controllerId="@controller.Id" onclick="ShowControllerInReadonlyMode('@controller.Id')">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a asp-action="CreateInspection" asp-controller="InspectionManager" asp-route-controllerId="@controller.Id" class="text-lg-center btn btn-success" onclick="EditControllerForm();">
+                                                        Start Inspection
+                                                    </a>
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <a class="text-lg-center btn btn-success" asp-action="EditController" asp-controller="ControllersManager" asp-route-controllerId="@controller.Id">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a class="text-lg-center btn btn-success" asp-action="EditController" asp-controller="ControllersManager" asp-route-controllerId="@controller.Id" onclick="EditControllerForm();">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+
+                                            }
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+    $("#tblController").DataTable({
+        pageLength: 25,//set default page record 25
+        "aaSorting": [],
+        columnDefs: [
+            { orderable: false, targets: [9] } // Disable sorting for the first and fourth columns
+        ],
+        drawCallback: function (settings) {
+            var api = this.api();
+            var pageInfo = api.page.info();
+
+            // Check if there are no records
+            if (pageInfo.recordsDisplay === 0) {
+                // Disable both Previous and Next buttons
+                $('.dataTables_paginate .paginate_button').addClass('disabled');
+            }
+        }
+    });
+</script>

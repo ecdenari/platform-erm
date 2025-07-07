@@ -1,0 +1,526 @@
+﻿@model PureGreenLandGroup.Models.ViewModel.Inspection.InspectionMasterViewModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0%;
+            margin: 0%;
+            box-sizing: border-box;
+        }
+
+        .w-50 {
+            width: 50%;
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        .m-b {
+            margin: 16px 0px 16px 0px;
+        }
+
+        .content-text {
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .content-text-p-2 {
+            padding: 8px 4px 8px 4px;
+        }
+
+        .border-col {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .page {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        .tdborder-bottom {
+            border-bottom: 1px solid #000000;
+        }
+
+        .caption-heading {
+            text-align: center;
+            font-weight: 700;
+            border: 1px solid #000;
+            border-bottom: none;
+        }
+
+        .border-colbr {
+            border-bottom: 1px solid #000000;
+            border-right: 1px solid #000000;
+        }
+
+        .border-colr {
+            border-right: 1px solid #000000;
+        }
+
+        .v-bottom {
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!--------------- Inspection Date ---------------------->
+        <table class="w-100 m-b">
+            <tr>
+                <td>
+                    <table width="30%" style="margin: 0px 0px 0px auto">
+                        <tbody>
+                            <tr>
+                                <td class="content-text-p-2" width="50px">
+                                    <span class="content-text">Date:</span>
+                                </td>
+                                <td class="tdborder-bottom content-text-p-2">
+                                    <span>@Model.GetControllersViewModel.InspectionDate.ToString("MM/dd/yyyy")</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+
+        <!--------------- Property and User details ---------------------->
+        <table class="w-100 m-b">
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="content-text-p-2" width="90px">
+                                    <span class="content-text">Property:</span>
+                                </td>
+                                <td class="tdborder-bottom content-text-p-2">
+                                    <span>@Model.GetControllersViewModel.PropertyName</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="content-text-p-2 " width="110px">
+                                    <span class="content-text">Tech/Inspector:</span>
+                                </td>
+                                <td class="tdborder-bottom content-text-p-2">
+                                    <span>@Model.GetControllersViewModel.InspectorName</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <!---------------  Controller and inspection details ---------------------->
+        <table class="w-100 border-col m-b">
+            <caption class="content-text-p-2 caption-heading">Controller</caption>
+            <tbody>
+                <tr>
+                    <td class="border-col">
+                        <table width="50%">
+                            <tbody>
+                                <tr>
+                                    <td class="content-text-p-2" width="150px">
+                                        <span class="content-text">Manufacurer</span>
+                                    </td>
+                                    <td class="content-text-p-2">
+                                        <span>@Model.GetControllersViewModel.Manufacturer</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <table width="50%">
+                            <tbody>
+                                <tr>
+                                    <td class="content-text-p-2" width="0px">
+                                        <span class="content-text">Model</span>
+                                    </td>
+                                    <td class="content-text-p-2">
+                                        <span>@Model.GetControllersViewModel.Model</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-col" colspan="2">
+                        <table class="w-100">
+                            <tbody>
+                                <tr>
+                                    <td class="content-text-p-2" width="150px">
+                                        <span class="content-text">Controller Name</span>
+                                    </td>
+                                    <td class="content-text-p-2">
+                                        <span>@Model.GetControllersViewModel.ControllerName</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-col" colspan="2">
+                        <table class="w-100">
+                            <tbody>
+                                <tr>
+                                    <td class="content-text-p-2" width="150px">
+                                        <span class="content-text">Location</span>
+                                    </td>
+                                    <td class="content-text-p-2">
+                                        <span>@Model.GetControllersViewModel.ControllerLocation</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-col" colspan="2">
+                        <table class="w-100">
+                            <tbody>
+                                <tr>
+                                    <td class="w-50 border-colbr">
+                                        <table class="w-100">
+                                            <tr class="">
+                                                <td class="content-text-p-2" width="150px">
+                                                    <span class="content-text">Inspection Type</span>
+                                                </td>
+                                                <td class="content-text-p-2">
+                                                    @switch (@Model.GetControllersViewModel.InspectionType)
+                                                    {
+                                                        case "1":
+                                                            <span>Scheduled Inpspection</span>
+                                                            break;
+                                                        case "2":
+                                                            <span>Service Call</span>
+                                                            break;
+                                                        case "3":
+                                                            <span>Enhancement </span>
+                                                            break;
+                                                        default:
+                                                            <span> </span>
+                                                            break;
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td rowspan="3">
+                                        <table class="w-100 ">
+                                            <tr>
+                                                <td class="content-text-p-2" width="150px">
+                                                    <span class="content-text">Inspection Comment</span>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="content-text-p-2">
+                                                    <span>@Model.GetControllersViewModel.InspectionComment</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="w-50 border-colbr">
+                                        <table class="w-100">
+                                            <tr>
+
+                                                <td class="content-text-p-2" width="150px">
+                                                    <span class="content-text">Rain Sensor</span>
+                                                </td>
+                                                <td class="content-text-p-2">
+                                                    @if (@Model.GetControllersViewModel.RainSensor)
+                                                    {
+                                                        <span>Yes</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>No</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="w-50 border-colbr">
+                                        <table class="w-100">
+                                            <tr>
+                                                <td class="content-text-p-2" width="150px">
+                                                    <span class="content-text">Rain sensor functioning</span>
+                                                </td>
+                                                <td class="content-text-p-2">
+                                                    <span>@Model.CreateInspectionViewModel.RainSensor</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="w-50 border-colr">
+                                        <table class="w-100">
+                                            <tr>
+                                                <td class="content-text-p-2" width="150px">
+                                                    <span class="content-text">Water Source</span>
+                                                </td>
+                                                <td class="content-text-p-2">
+                                                    <span>@Model.GetControllersViewModel.WaterSource</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!---------------  Programs details ---------------------->
+        <table class="w-100 border-col m-b">
+            <caption class="content-text-p-2 caption-heading">Programs</caption>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td class="content-text-p-2 border-col">
+                        <span class="content-text">Program Type</span>
+                    </td>
+                    <td class="content-text-p-2 border-col">
+                        <span class="content-text">Start Time</span>
+                    </td>
+                    <td class="content-text-p-2 border-col">
+                        <span class="content-text">Day of Week</span>
+                    </td>
+                    <td class="content-text-p-2 border-col">
+                        <span class="content-text">Seasonal Adjust %</span>
+                    </td>
+                </tr>
+                @if (Model.ProgramDetailsList != null && Model.ProgramDetailsList.Count > 0)
+                {
+                    int programCounter = 0;
+                    foreach (var program in Model.ProgramDetailsList)
+                    {
+                        <tr>
+                            <!-- program names -->
+                            <td class="content-text-p-2 border-col">
+                                <span>@((char)(programCounter + 65))</span>
+                            </td>
+                            <!-- program type -->
+                            <td class="content-text-p-2 border-col">
+                                <span>Standard</span>
+                            </td>
+                            <!-- program start time -->
+                            <td class=" content-text-p-2 border-col">
+                                @{
+                                    string programStartTime = string.Empty;
+
+                                    programStartTime = program.ProgramTimer1;
+                                    @if (!string.IsNullOrEmpty(program.ProgramTimer1) && program.ProgramTimer1.ToLower() != "off")
+                                    {
+                                        programStartTime += program.Timer1Median;
+                                    }
+
+                                    programStartTime += ", " + program.ProgramTimer2;
+                                    @if (!string.IsNullOrEmpty(program.ProgramTimer2) && program.ProgramTimer1.ToLower() != "off")
+                                    {
+                                        programStartTime += program.Timer2Median;
+                                    }
+                                    programStartTime += ", " + program.ProgramTimer3;
+                                    @if (!string.IsNullOrEmpty(program.ProgramTimer3) && program.ProgramTimer3.ToLower() != "off")
+                                    {
+                                        programStartTime += program.Timer3Median;
+                                    }
+
+                                    <span>@programStartTime</span>
+                                }
+                            </td>
+                            <!-- program week days -->
+                            <td class=" content-text-p-2 border-col">
+                                @{
+                                    string weekDays = string.Empty;
+                                    if (program.IsMonEnable) weekDays += "M,";
+                                    if (program.IsTueEnabled) weekDays += "T,";
+                                    if (program.IsWedEnabled) weekDays += "W,";
+                                    if (program.IsThuEnabled) weekDays += "Th,";
+                                    if (program.IsFriEnabled) weekDays += "F,";
+                                    if (program.IsSatEnabled) weekDays += "Sat,";
+                                    if (program.IsSunEnable) weekDays += "Sun,";
+                                    // Remove the trailing comma if any
+                                    weekDays = weekDays.TrimEnd(',');
+                                    <span>@weekDays</span>
+                                }
+                            </td>
+                            <!-- program seasonal adjust -->
+                            <td class=" content-text-p-2 border-col">
+                                @{
+                                    int inspectionMonth = @Model.GetControllersViewModel.InspectionDate.Month;
+                                    var seasionalAdjust = Model.SeasionalAdjustList.Where(m => m.MonthId == inspectionMonth).FirstOrDefault();
+                                    switch (programCounter + 1)
+                                    {
+                                        case 1:
+                                            <span>@seasionalAdjust.ProgramA %</span>
+                                            break;
+                                        case 2:
+                                            <span>@seasionalAdjust.ProgramB %</span>
+                                            break;
+                                        case 3:
+                                            <span>@seasionalAdjust.ProgramC %</span>
+                                            break;
+                                        case 4:
+                                            <span>@seasionalAdjust.ProgramD %</span>
+                                            break;
+                                        default:
+                                            <span> </span>
+                                            break;
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        programCounter++;
+                    }
+                }
+            </tbody>
+        </table>
+
+        <!---------------  Zone issue details ---------------------->
+        <table class="w-100 m-b text-center">
+            <caption class="content-text-p-2 caption-heading">Zone Issues</caption>
+            <tbody>
+                <tr>
+                    <td class="content-text content-text-p-2 border-col v-bottom"
+                        style="border-right: none;">
+                        <span style="writing-mode: vertical-rl;">
+                            Zone
+                        </span>
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom"
+                        style="border-left: none;writing-mode: vertical-lr;">
+                        Time
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Zone#
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom ">
+                        Value Status
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Clogged Nozzle
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Broken Spray
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Broken Rotor
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Raise Lower
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Move Head
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Broken Lateral
+                    </td>
+                    <td class="content-text content-text-p-2 border-col v-bottom">
+                        Broken Main
+                    </td>
+
+                </tr>
+                @{
+                    if (Model.CreateInspectionViewModel.ZoneIssuesInspectionViewModel != null && Model.CreateInspectionViewModel.ZoneIssuesInspectionViewModel.Count > 0)
+                    {
+                        int zoneIssueCounter = 0;
+                        foreach (var zoneIssue in Model.CreateInspectionViewModel.ZoneIssuesInspectionViewModel)
+                        {
+                            <tr>
+                                <td class="content-text-p-2 border-col"><span>@(zoneIssueCounter + 1)</span></td>
+                                <td class="border-col content-text-p-2">
+                                    @{
+                                        var totalRunTime = new List<string>();
+                                        var programTimes = new[]
+                                        {
+                                             Model.ZonesList[zoneIssueCounter].ProgramA,
+                                             Model.ZonesList[zoneIssueCounter].ProgramB,
+                                             Model.ZonesList[zoneIssueCounter].ProgramC,
+                                             Model.ZonesList[zoneIssueCounter].ProgramD
+                                             };
+
+                                        foreach (var programTime in programTimes)
+                                        {
+                                            var timeSpan = TimeSpan.Parse(programTime);
+                                            var runTime = timeSpan.TotalMinutes.ToString();
+                                            totalRunTime.Add(runTime);
+                                        }
+
+                                        var totalRunTimeString = string.Join(",", totalRunTime);
+                                    }
+                                    <span>@totalRunTimeString</span>
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@Model.ZonesList[zoneIssueCounter].ZoneLocationName</span>
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@zoneIssue.ValveStatus</span>
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@(zoneIssue.CloggedNozzle > 0 ? zoneIssue.CloggedNozzle.ToString() : string.Empty)</span>
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@(zoneIssue.BrokenSpray > 0 ? zoneIssue.BrokenSpray.ToString() : string.Empty)</span>
+
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@(zoneIssue.BrokenRotor > 0 ? zoneIssue.BrokenRotor.ToString() : string.Empty)</span>
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@(zoneIssue.RaiseLower > 0 ? zoneIssue.RaiseLower.ToString() : string.Empty)</span>
+
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@zoneIssue.InspectedMoveHeadList.Count</span>
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@zoneIssue.InspectedZoneBrokenLateralList.Count</span>
+                                </td>
+                                <td class="border-col content-text-p-2">
+                                    <span>@zoneIssue.InspectedZoneBrokenMainViewModel.Count</span>
+                                </td>
+                            </tr>
+                            zoneIssueCounter++;
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

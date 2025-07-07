@@ -1,0 +1,301 @@
+﻿@using PureGreenLandGroup.Models.ViewModel.Account
+@model DashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Irrigation Manager Dashboard";
+    double draftInspectionPercent = 0;
+    double completeInspectionPercent = 0;
+    if (Model.TotalInspection > 0)
+    {
+        draftInspectionPercent = ((double)Model.DraftInspection / Model.TotalInspection * 100);
+        completeInspectionPercent = ((double)Model.CompleteInspection / Model.TotalInspection * 100);
+    }
+}
+
+<div class="main-container">
+    <div class="properties-details">
+        <div class="property-heading">
+            <h5>Dashboard</h5>
+        </div>
+        <div class="row gy-4 mt-1">
+            <div class="col-xxl-6 col-xl-12 col-lg-12">
+                <div class="property-card">
+                    <div class="row">
+                        <!--Zone pie chart-->
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="property-heading">
+                                        <a href="#" target="" class="cardLink" style="text-decoration:none!important;">
+                                            <i class=""> <img src="/admindashboard/images/icons/real_estate_agent.svg" alt=""></i>
+                                            <h3>Zone Faults(@DateTime.Now.ToString("MMM"))</h3>
+                                        </a>
+                                    </div>
+                                    <div class="chart-section">
+                                        <div id="ZoneFaultPieChart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--Statistics section-->
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-grid gap-3 inCardList">
+                                        <div class="a-inner-card bg-transparent shadow">
+                                            <div class="card-label">
+                                                <span class="sub-head">Controllers</span>
+                                            </div>
+                                            <div class="card-no bg-transparent">
+                                                @Model.TotalController
+                                            </div>
+                                        </div>
+                                        <div class="a-inner-card bg-transparent shadow">
+                                            <div class="card-label">
+                                                <span class="sub-head">Properties</span>
+                                            </div>
+                                            <div class="card-no bg-transparent">
+                                                @Model.TotalProperty
+                                            </div>
+                                        </div>
+                                        <div class="a-inner-card bg-transparent shadow">
+                                            <div class="card-label">
+                                                <span class="sub-head">Zone</span>
+                                            </div>
+                                            <div class="card-no bg-transparent">
+                                                @Model.TotalZone
+                                            </div>
+                                        </div>
+                                        <div class="a-inner-card bg-transparent shadow">
+                                            <div class="card-label">
+                                                <span class="sub-head">Runtime(Weekly)</span>
+                                            </div>
+                                            <div class="card-no bg-transparent">
+                                                @Model.TotalWeeklyRuntimeMinutes
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-6 col-xl-12 col-lg-12">
+                <div class="row">
+                    <!----Inspection counts section starts-->
+                    <div class="col-xxl-12 col-xl126 col-lg12">
+                        <div class="property-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="property-heading justify-content-between mb-3">
+                                        <a href="#" target="" class="cardLink">
+                                            <i class=""><img src="~/admindashboard/images/inspection-icon.svg" alt=""></i>
+                                            <h3>Inspections(@DateTime.Now.ToString("MMM"))</h3>
+                                        </a>
+                                        <div class="see-all">
+                                            <a onclick="ManageNavigationMenus('Inspection_Menu');window.location.href='/InspectionManager/InspectionGridIndex';">
+                                                See All
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-grid gap-3">
+                                        <div class="inner-card">
+                                            <i class=""><img src="~/admindashboard/images/inspection-icon.svg" alt=""></i>
+                                            <div class="card-label">
+                                                <span class="sub-head">Draft</span>
+                                            </div>
+                                            <div class="progress-div">
+                                                <div class="text-end">@Model.DraftInspection</div>
+                                                <div class="progress-bar">
+                                                    <div class="progress1" style="max-width: @draftInspectionPercent%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="inner-card">
+                                            <i class=""><img src="~/admindashboard/images/Icons/completed.svg" alt=""></i>
+                                            <div class="card-label">
+                                                <span class="sub-head">Complete</span>
+                                            </div>
+                                            <div class="progress-div">
+                                                <div class="text-end">@Model.CompleteInspection</div>
+                                                <div class="progress-bar">
+                                                    <div class="progress2" style="max-width: @completeInspectionPercent%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="inner-card">
+                                            <i class=""><img src="~/admindashboard/images/Icons/total.svg" alt=""></i>
+                                            <div class="card-label">
+                                                <span class="sub-head">Total</span>
+                                            </div>
+                                            <div class="progress-div">
+                                                <div class="text-end">@Model.TotalInspection</div>
+                                                <div class="progress-bar">
+                                                    @if (@Model.TotalInspection > 0)
+                                                    {
+                                                        <div class="progress3" style="max-width: 100%"></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="progress3" style="max-width: 0%"></div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!--Inspection(Monthly) section starts-->
+            <div class="col-xxl-6 col-xl-12 col-lg-12 inspectionsBlock">
+                <div class="property-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row property-heading mb-3">
+                                <div class="col-auto">
+                                    <a href="#" target="" class="cardLink" style="text-decoration:none!important;">
+                                        <i class=""><img src="~/admindashboard/images/inspection-icon.svg" alt=""></i>
+                                        <h3>Inspection(Monthly)</h3>
+                                    </a>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    @{
+                                        var currentYear = DateTime.Now.Year;
+                                        var years = Enumerable.Range(currentYear - 3, 4).Select(y => new SelectListItem
+                                                    {
+                                                        Value = y.ToString(),
+                                                        Text = y.ToString()
+                                                    }).ToList();
+                                        // Reverse the list to put it in descending order
+                                        years.Reverse();
+
+                                        <select class="form-select" onchange="FilterMonthlyInspectionBarGraph(event)">
+                                            @foreach (var year in years)
+                                            {
+                                                <option value="@year.Value">@year.Text</option>
+                                            }
+                                        </select>
+                                    }
+
+
+                                </div>
+                            </div>
+                            <div class="chart-section responsive-barchart">
+                                <div id="MonthlyInspectionsChart" class="w-100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Weekly runtime section starts-->
+            <div class="col-xxl-6 col-xl-12 col-lg-12">
+                <div class="property-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="property-heading justify-content-between mb-3">
+                                <a href="#" target="" class="cardLink" style="text-decoration:none!important;">
+                                    <i class=""><img src="~/admindashboard/images/icons/week-runtime.svg" /></i>
+                                    <h3>Weekly Runtime</h3>
+                                </a>
+                                <div class="see-all">
+                                    <a onclick="ManageNavigationMenus('CReports_Menu');window.location.href='/Reports/ControllerRunTimeReportGrid';">
+                                        See All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="chart-section responsive-barchart">
+                                <div id="WeeklyRuntimeChart" class="w-100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Reports section starts-->
+            <div class="col-lg-12">
+                <div class="property-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="property-heading justify-content-between mb-3">
+
+                                <a href="#" onclick="ManageNavigationMenus('CReports_Menu');window.location.href='/Reports/ControllerRunTimeReportGrid';" target="" class="cardLink">
+                                    <i class=""><img src="~/admindashboard/images/icons/reports-icon.svg" alt=""></i>
+                                    <h3>Reports</h3>
+                                </a>
+                            </div>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <div class="table-responsive">
+                                        @if (Model.ControllerTimeDetailsListVM != null)
+                                        {
+                                            @await Html.PartialAsync("_controllerRunTimeGrid", Model.ControllerTimeDetailsListVM)
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Export controller run time report popup begins-->
+<div class="modal fade modal-lg" id="ExportControllerRuntimeReportPopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title">Controller Run Time Report</h5>
+                <button type="button" class="btn-close inspectionBtnClose BrokenHeadClosePopupBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="Controller_hdn_Id" />
+                <input type="hidden" id="Controller_hdn_Name" />
+                <input type="hidden" id="Property_hdn_Name" />
+                <input type="hidden" id="startTime_hdn" />
+
+                <div class="row p-2">
+                    <div class="col-2">
+                        <label>Program</label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" id="ControllerProgramSelectInput" onchange="EnableProgramStartTime(event)">
+                        </select>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-2">
+                        <label>Start time</label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" id="ProgramStartTimerSelectInput">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="DownloadControllerRunTimeReport(event)">Export</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Export controller run time report popup ends-->
+
+<!--Chart/graph initialication-->
+@await Html.PartialAsync("_dashboardGraph", Model)
+
+
