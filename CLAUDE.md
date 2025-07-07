@@ -168,15 +168,21 @@ Remember: Platform-ERM is building the future of landscape business management a
    - `CLAUDE.md` (this file in root - primary development rules)
    - `/docs/development/architecture-guide.md` (technical architecture patterns)
    - `/docs/development/agent-coordination.md` (coordination protocols)
+   - `/docs/development/branch-safety-guide.md` (Git branch verification)
    - `/docs/tracking/completion-log.md` (current work status and completed tasks)
    - `/docs/features/aspire-workflow-hierarchy.md` (if working on workflow features)
 
 2. **Sync with Develop Branch** (CRITICAL):
    ```bash
+   # First verify you're not on main branch
+   git branch --show-current
+   
+   # Then sync with develop
    git fetch origin
    git merge origin/develop
    ```
    - This ensures you have latest documentation, API contracts, and shared interfaces
+   - See `/docs/development/branch-safety-guide.md` for branch verification steps
    - See `/docs/development/git-coordination-workflow.md` for detailed workflow
 
 3. **Check Current Work Status**:
@@ -662,6 +668,8 @@ Use `/project:end-session` to complete your development session with proper Git 
 - `/project:start-session-agent2` - Agent 2 startup with system coordination context
 - `/project:start-session-agent3` - Agent 3 startup with integration testing context
 - `/project:switch-agent-assignment` - Transition agent to new module/feature assignment
+
+For branch safety verification, see `/docs/development/branch-safety-guide.md`.
 
 ### Creating Additional Commands
 Custom commands are stored in `.claude/commands/` directory as Markdown files. Each agent can create workflow-specific commands as needed.
