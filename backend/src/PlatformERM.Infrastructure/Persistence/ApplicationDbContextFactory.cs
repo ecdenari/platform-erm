@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using PlatformERM.Application.Common.Interfaces;
+using PlatformERM.Infrastructure.Common.Interfaces;
 
 namespace PlatformERM.Infrastructure.Persistence;
 
@@ -16,14 +16,14 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         optionsBuilder.UseNpgsql(connectionString);
 
         // Create a design-time tenant service
-        var designTimeTenantService = new DesignTimeTenantService();
+        var designTimeTenantService = new DesignTimeTenantContextService();
         
         return new ApplicationDbContext(optionsBuilder.Options, designTimeTenantService);
     }
 }
 
-// Design-time implementation of ITenantService
-public class DesignTimeTenantService : ITenantService
+// Design-time implementation of ITenantContextService
+public class DesignTimeTenantContextService : ITenantContextService
 {
     public string CurrentTenant => "design-time";
 

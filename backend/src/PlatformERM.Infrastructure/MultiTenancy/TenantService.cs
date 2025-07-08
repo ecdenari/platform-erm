@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PlatformERM.Application.Common.Interfaces;
+using PlatformERM.Infrastructure.Common.Interfaces;
 using PlatformERM.Infrastructure.Persistence;
 
 namespace PlatformERM.Infrastructure.MultiTenancy;
 
-public class TenantService : ITenantService
+public class TenantContextService : ITenantContextService
 {
     private readonly IServiceProvider _serviceProvider;
     private string _currentTenant = "demo"; // Default tenant for development

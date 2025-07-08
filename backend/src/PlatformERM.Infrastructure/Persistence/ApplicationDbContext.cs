@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PlatformERM.Application.Common.Interfaces;
+using PlatformERM.Infrastructure.Common.Interfaces;
 using PlatformERM.Domain.Common;
 using PlatformERM.Domain.Entities;
 
@@ -7,11 +7,11 @@ namespace PlatformERM.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
 {
-    private readonly ITenantService _tenantService;
+    private readonly ITenantContextService _tenantService;
 
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
-        ITenantService tenantService) : base(options)
+        ITenantContextService tenantService) : base(options)
     {
         _tenantService = tenantService;
     }

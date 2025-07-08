@@ -2,9 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PlatformERM.Application.Common.Interfaces;
 using PlatformERM.Application.Services;
+using PlatformERM.Infrastructure.Common.Interfaces;
 using PlatformERM.Infrastructure.MultiTenancy;
 using PlatformERM.Infrastructure.Persistence;
 using PlatformERM.Infrastructure.Repositories;
+using PlatformERM.Infrastructure.Services;
 using PlatformERM.API.Middleware;
 using AutoMapper;
 using Serilog;
@@ -37,8 +39,14 @@ try
     builder.Services.AddSingleton<IMapper>(mapperConfig.CreateMapper());
 
     // Multi-tenancy services
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddScoped<ITenantContextService, TenantContextService>();
+    builder.Services.AddScoped<ICurrentTenantService, CurrentTenantService>();
     builder.Services.AddScoped<ITenantService, TenantService>();
     builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
+    
+    // Tenant repository
+    builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 
     // Property services
     builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
