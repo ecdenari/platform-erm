@@ -328,9 +328,15 @@ appsettings.Development.json
 # Backup directories from sync
 .env-backup-*
 
+# Database backups (stored in OneDrive instead)
+*.sql
+.last-restore.txt
+
 # Keep sync scripts
 !sync-env.ps1
 !sync-env.sh
+!backup-db.ps1
+!restore-db.ps1
 
 # OS generated files
 .DS_Store
