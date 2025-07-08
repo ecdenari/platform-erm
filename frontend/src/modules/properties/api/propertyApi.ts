@@ -8,7 +8,7 @@ import {
   PropertyFilters
 } from '../types'
 
-const PROPERTIES_BASE_URL = '/api/internal/properties'
+const PROPERTIES_BASE_URL = '/internal/properties'
 
 export const propertyApi = {
   // Get paginated list of properties
