@@ -1,0 +1,125 @@
+﻿@using PureGreenLandGroup.Models.ViewModel.SiteControllerManagement
+@using PureGreenLandGroup.Utility.Enums
+@model List<SeasonalAdjustDropdownViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Seasonal Adjust values list";
+    SeasonalAdjustDropdownViewModel seasonalAdjustDropdownVM = new() { Value = null };
+}
+
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+
+<div class="rightSection">
+    <div class="row">
+        <div class="row mb-2">
+            <div class="col-auto">
+                <a class="btn btn-secondary-custom" asp-action="AdminPanel" asp-controller="MasterDataManager">Back to statistics </a>
+            </div>
+            <div class="col-auto ms-auto">
+                <a class="btn btn-success col-auto" onclick="OpenMasterDataPopup()"><i class="fas fa-plus"></i> New</a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered dataTable table-striped no-footer" id="SeasonalAdjustListTable">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>Seasonal Adjust Month</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        int counter = 1;
+                        foreach (var seasonalAdjustItem in Model)
+                        {
+                            <tr>
+                                <td>@seasonalAdjustItem.Value<span>%</span></td>
+                                <td>
+                                    @if (seasonalAdjustItem.IsActive)
+                                    {
+                                        <div style="color:#3ea304;">
+                                            Active
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div style="color:gray;">
+                                            Inactive
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        var requestURl = "/MasterDataManager/GetSeasonalAdjustMonth?id=" + @seasonalAdjustItem.Id;
+                                    }
+                                    <a class="text-success" onclick="PopulateMasterEntityDetail('@requestURl','seasonalAdjustDropdownVM_Id','seasonalAdjustDropdownVM_Value')">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (seasonalAdjustItem.IsActive)
+                                    {
+                                        <a class="text-warning ">
+                                            <label class="switch">
+                                                <input type="checkbox" checked onclick="ChangeMasterDataStatusConfirmation('@seasonalAdjustItem.Id','false','@MasterEntityType.seasonal_adjust_month')">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class=" text-warning">
+                                            <label class="switch">
+                                                <input type="checkbox" onclick="ChangeMasterDataStatusConfirmation('@seasonalAdjustItem.Id','true','@MasterEntityType.seasonal_adjust_month')">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-lg modal-lg-custom" id="CreateSeasonalAdjustValuePopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title">Create New Seasonal Adjust Value</h5>
+                <button type="button" class="btn-close inspectionBtnClose " data-bs-dismiss="modal" aria-label="Close" onclick="CloseMasterDataPopups()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form method="post" asp-action="CreateNewSeasonalAdjustMonth" asp-controller="MasterDataManager" enctype="multipart/form-data" id="SeasonalAdjustForm">
+                <div class="modal-body">
+                    <div class="m-2">
+                        <input type="hidden" asp-for="@seasonalAdjustDropdownVM.Id" />
+                        <div class="form-group ">
+                            <label asp-for="@seasonalAdjustDropdownVM.Value" class="mb-2">Seasonal Adjust value<span class="text-danger fw-bold ">*</span></label>
+                            <div class="input-group">
+                                <input type="number" asp-for="@seasonalAdjustDropdownVM.Value" placeholder="Enter seasonal adjust value.." class="form-control " maxlength="100" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="seasonal-adjust-input-group">%</span>
+                                </div>
+                            </div>
+                            <span asp-validation-for="@seasonalAdjustDropdownVM.Value" class="text-danger validation-font" id="SeasonalAdjustName_Validation"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center mt-2">
+                    <button type="submit" class="btn btn-success"> SUBMIT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/AdminDashboard/js/jquery.min.js"></script>
+<script src="~/admindashboard/datatable/datatable_puregreen.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/admindashboard/js/masterdatehandler.js"></script>

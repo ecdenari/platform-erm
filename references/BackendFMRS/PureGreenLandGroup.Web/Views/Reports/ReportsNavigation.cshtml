@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Reports Menu";
+}
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+</style>
+
+<div class="rightSection">
+    <div class="row text-center gy-3">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card border border-success view-report-card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title m-0">Controller Run Time Report</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text m-0">View detailed insights on controller run times.</p>
+                    <a asp-controller="Reports" asp-action="ControllerRunTimeReportGrid" class="btn btn-success mt-3">View Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

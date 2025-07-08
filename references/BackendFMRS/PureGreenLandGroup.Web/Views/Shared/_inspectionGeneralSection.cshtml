@@ -1,0 +1,182 @@
+﻿@model PureGreenLandGroup.Models.ViewModel.Inspection.InspectionMasterViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+@{
+    var userName = @Accessor.HttpContext?.Session.GetString("LoggedUserName")?.ToString() ?? string.Empty;
+}
+
+<div class="rightSection p-3">
+    <div class="inputDetails ">
+        <form asp-controller="dashboard" asp-action="CreateInspection" enctype="multipart/form-data" id="CreateInspectionForm" class="row">
+            <div class="col-xxl-8 view-mode">
+                <div class="row gy-3">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="mt-2 mb-2 inspection-layout inspection-layout2">
+                            <h4>Inspection</h4>
+
+                            <div class="row px-3 mb-3  align-items-center mb-lg-4">
+                                <div class="col-md-4"> <lable>Title <span class="text-danger font-weight-bold">*</span></lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        <input type="hidden" asp-for="CreateInspectionViewModel.Id" id="InspectionId" />
+                                        <input type="hidden" asp-for="GetControllersViewModel.Id" />
+                                        <input asp-for="CreateInspectionViewModel.Title" class="form-control" placeholder="Enter title" type="text" maxlength="80" />
+                                        <span asp-validation-for="CreateInspectionViewModel.Title" class="text-danger text-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-3 mb-3  align-items-center mb-lg-4">
+                                <div class="col-md-4"> <lable>Date</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        <p class=" mb-0">@DateTime.UtcNow.ToString("d")</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-3 mb-3  align-items-center mb-lg-4">
+                                <div class="col-md-4"> <lable>Inspector</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        <p class=" mb-0">@userName</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-3 mb-3  align-items-center mb-lg-4">
+                                <div class="col-md-4"> <lable>Type</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        <select class="form-select" asp-for="CreateInspectionViewModel.Type">
+                                            <option value="1">Scheduled Inspection</option>
+                                            <option value="2">Service Call</option>
+                                            <option value="3">Enhancement </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            @*  <div class="row px-3 mb-3">
+                            <div class="col-md-4"> <lable>Prior Equipment</lable>  </div>
+                            <div class="col-md-8">
+                            <div class="insectinput">
+                            <input asp-for="CreateInspectionViewModel.PriorEquipment" type="text" class="form-control" placeholder="Enter Prior Equipment" />
+                            </div>
+                            </div>
+                            </div>
+                            <div class="row px-3 mb-3">
+                            <div class="col-md-4"> <lable>Compliant?</lable>  </div>
+                            <div class="col-md-8">
+                            <div class="insectinput">
+                            <select class="form-select" asp-for="CreateInspectionViewModel.Compliant">
+                            <option value="NA">NA</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            </select>
+                            </div>
+                            </div>
+                            </div> *@
+                            <div class="row px-3 mb-3">
+                                <div class="col-md-4"> <lable>Function R/F Sensor?</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        <select class="form-select" asp-for="CreateInspectionViewModel.RainSensor">
+                                            <option value="NA">NA</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            @*  <div class="row px-3 mb-3">
+                            <div class="col-md-4"> <lable>Water Pressure</lable>  </div>
+                            <div class="col-md-8">
+                            <div class="insectinput">
+                            <div class="psiselect">
+
+                            <input type="text" class="form-control" placeholder="Enter water pressure" asp-for="CreateInspectionViewModel.WaterPressure" pattern="[0-9]+([.][0-9]+)?" />
+
+                            <select class="form-select" asp-for="CreateInspectionViewModel.WaterPressureUnit">
+                            <option value="PSI">PSI</option>
+                            <option value="kg/cm³"> kg/cm³</option>
+                            </select>
+                            </div>
+                            </div>
+                            </div>
+                            </div> *@
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="mt-2 mb-2 inspection-layout inspection-layout2">
+                            <h4>Controller</h4>
+                            <div class="row px-3 mb-3 align-items-center">
+                                <div class="col-md-4"> <lable>Name</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        @* <p class="mb-0 px-3 text-center">@Model.GetControllersViewModel.ControllerName</p> *@
+                                        <p class="mb-0">@Model.GetControllersViewModel.ControllerName</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-3 mb-3 align-items-center">
+                                <div class="col-md-4"> <lable>Location</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        @* <p class="mb-0 px-3 text-center">@Model.GetControllersViewModel.ControllerLocation</p> *@
+                                        <p class="mb-0">@Model.GetControllersViewModel.ControllerLocation</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row px-3 mb-3 align-items-center">
+                                <div class="col-md-4"> <lable>Model</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        @* <p class="mb-0 px-3 text-center">@Model.GetControllersViewModel.Model</p> *@
+                                        <p class="mb-0">@Model.GetControllersViewModel.Model</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row px-3 mb-3 align-items-center">
+                                <div class="col-md-4"> <lable>Zones</lable>  </div>
+                                <div class="col-md-8">
+                                    <div class="insectinput">
+                                        @* <p class="mb-0 px-3 text-center">@Model.GetControllersViewModel.TotalZones</p> *@
+                                        <p class="mb-0">@Model.GetControllersViewModel.TotalZones</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 mb-2">
+                                <h4>Site</h4>
+                                <div class="row px-3 mb-3">
+                                    <div class="col-md-4"> <lable>Name</lable>  </div>
+                                    <div class="col-md-8">
+                                        <div class="insectinput">
+                                            @* <p class="mb-0 px-3 ">@Model.GetControllersViewModel.PropertyName</p> *@
+                                            <p class="mb-0">@Model.GetControllersViewModel.PropertyName</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row px-3 mb-3">
+                                    <div class="col-md-4"> <lable>Address</lable>  </div>
+                                    <div class="col-md-8">
+                                        <div class="insectinput">
+                                            @* <p class="mb-0 px-3 ">@Model.GetControllersViewModel.PropertyAddress</p> *@
+                                            <p class="mb-0">@Model.GetControllersViewModel.PropertyAddress</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 inspection-comment">
+                <table>
+                    <tbody>
+                        <tr><td class="inspection">Inspection Comments</td></tr>
+                        <tr><td class="pt-1"><textarea asp-for="CreateInspectionViewModel.Comment" class="cstm-textarea form-control" placeholder="No Notes..." maxlength="500"></textarea></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>

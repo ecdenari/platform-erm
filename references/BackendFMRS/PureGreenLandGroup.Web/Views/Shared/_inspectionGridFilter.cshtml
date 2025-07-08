@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+@model List<PureGreenLandGroup.Models.ViewModel.Inspection.InspectionList>
+@{
+    var userInRole = @Accessor.HttpContext?.Session.GetString("LoggedUserRole")?.ToString() ?? string.Empty;
+    bool isAdmin = userInRole == "Admin";
+
+}
+<div class="table_list_data mt-3">
+    <table class="table table-bordered dataTable no-footer table-striped" id="InspectionTable">
+        <thead class="bg-dark text-white">
+            <tr>
+                <th>Title</th>
+                <th>Controller</th>
+                <th>Property</th>
+                <th>Inspection Date</th>
+                <th>Inspector</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var inspectionDetails in Model)
+            {
+                <tr>
+                    <td class="cstm-ellipse">@inspectionDetails.InspectionName</td>
+                    <td>@inspectionDetails.ControllerName</td>
+                    <td>@inspectionDetails.PropertyName </td>
+                    <td>@inspectionDetails.InspectionDate.ToString("MM/dd/yyyy") </td>
+                    <td>@inspectionDetails.Inspector </td>
+                    @if (inspectionDetails.IsInspectionCompleted)
+                    {
+                        <td>Completed </td>
+                    }
+                    else
+                    {
+                        <td>Draft </td>
+                    }
+                    <td>
+                        @if (isAdmin)
+                        {
+                            <a class="btn text-success" onclick="RenderInspectionPdf('@inspectionDetails.InspectionId');">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        }
+                        <a class="btn text-success" asp-action="PopulateInspection" asp-controller="InspectionManager" asp-route-inspectionId="@inspectionDetails.InspectionId" onclick="$('#Loader').show();">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn text-danger" onclick="DownloadInspectionPdfReport('@inspectionDetails.InspectionId');">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </a>
+                        @if (isAdmin)
+                        {
+                            <a class="btn text-success" onclick="ExportCatalogMappingCSV('@inspectionDetails.InspectionId');">
+                                <i class="fa-solid fa-file-csv"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#InspectionTable').DataTable({
+            "order": [[3, "desc"]],
+            pageLength: 25,//set default page record 25
+            columnDefs: [
+                { orderable: false, targets: [6] } // Disable sorting for the first and fourth columns
+            ],
+            drawCallback: function (settings) {
+
+                var api = this.api();
+                var pageInfo = api.page.info();
+
+                // Check if there are no records
+                if (pageInfo.recordsDisplay === 0) {
+                    // Disable both Previous and Next buttons
+                    $('.dataTables_paginate .paginate_button').addClass('disabled');
+                }
+            }
+        });
+    });
+</script>

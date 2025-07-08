@@ -1,0 +1,145 @@
+﻿@using PureGreenLandGroup.Models.ViewModel.BaseViewModels
+@using PureGreenLandGroup.Models.ViewModel.SiteControllerManagement
+@using PureGreenLandGroup.Utility.Enums
+@* @using PureGreenLandGroup.Models.ViewModel.SiteControllerManagement
+@using PureGreenLandGroup.Utility.Enums
+@model List<ModelsViewModels> *@
+@model List<ModelGridListVM>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Models List";
+}
+@{
+    ModelsViewModels modelVM = new();
+}
+
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+
+<div class="rightSection">
+    <div class="row">
+        <div class="row mb-2">
+            <div class="col-auto">
+                <a class="btn btn-secondary-custom" asp-action="AdminPanel" asp-controller="MasterDataManager">Back to statistics </a>
+            </div>
+            <div class="col-auto ms-auto">
+                <a class="btn btn-success col-auto" onclick="OpenMasterDataPopup()"><i class="fas fa-plus"></i> New</a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered dataTable table-striped no-footer" id="ModelsTable">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>Manufacturer name</th>
+                        <th>Model name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        int counter = 1;
+                        foreach (var modelItem in Model)
+                        {
+                            <tr>
+                                <td>@modelItem.ManufacturerName</td>
+                                <td>@modelItem.ModelName</td>
+
+                                <td>
+                                    @if (modelItem.IsActive)
+                                    {
+                                        <div style="color:#3ea304;">
+                                            Active
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div style="color:gray;">
+                                            Inactive
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        var requestURl = "/MasterDataManager/GetModel?id=" + @modelItem.Id;
+                                    }
+                                    <a class="text-success" onclick="PopulateMasterEntityDetail('@requestURl','modelVM_Id','modelVM_ModelName','modelVM_ManufacturerId')">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @if (modelItem.IsActive)
+                                    {
+                                        <a class="text-warning ">
+                                            <label class="switch">
+                                                <input type="checkbox" checked onclick="ChangeMasterDataStatusConfirmation('@modelItem.Id','false','@MasterEntityType.model')">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class=" text-warning">
+                                            <label class="switch">
+                                                <input type="checkbox" onclick="ChangeMasterDataStatusConfirmation('@modelItem.Id','true','@MasterEntityType.model')">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-lg modal-lg-custom" id="CreateModelPopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title">Create New Model</h5>
+                <button type="button" class="btn-close inspectionBtnClose " data-bs-dismiss="modal" aria-label="Close" onclick="CloseMasterDataPopups()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form method="post" asp-action="CreateNewModel" asp-controller="MasterDataManager" enctype="multipart/form-data" id="ModelForm">
+                <div class="modal-body">
+                    <div class="m-2">
+                        <input type="hidden" asp-for="@modelVM.Id" />
+                        <div class="form-group mb-3">
+                            <label asp-for="@modelVM.ModelName" class="mb-2">Model Name<span class="text-danger fw-bold ">*</span></label>
+                            <input type="text" asp-for="@modelVM.ModelName" placeholder="Enter model name.." class="form-control form-control-custom" maxlength="100" />
+                            <span asp-validation-for="@modelVM.ModelName" class="text-danger validation-font" id="ModelName_Validation"></span>
+                        </div>
+                        <div class="form-group ">
+                            <label asp-for="@modelVM.ManufacturerId" class="mb-2">Manufacturer<span class="text-danger fw-bold ">*</span></label>
+                            <select class="form-select" asp-for="@modelVM.ManufacturerId">
+                                <option value="0">select manufacturer</option>
+                                @if (ViewBag.ManufacturerList != null)
+                                {
+                                    foreach (var manufacturer in (List<ManufacturerViewModel>)ViewBag.ManufacturerList)
+                                    {
+                                        <option value="@manufacturer.Id">@manufacturer.ManufacturerName</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="@modelVM.ManufacturerId" class="text-danger validation-font" id="ManufacturerId_Validation"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center mt-2">
+                    <button type="submit" class="btn btn-success"> SUBMIT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/AdminDashboard/js/jquery.min.js"></script>
+<script src="~/admindashboard/datatable/datatable_puregreen.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/admindashboard/js/masterdatehandler.js"></script>
+
+

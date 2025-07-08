@@ -1,0 +1,86 @@
+﻿@using PureGreenLandGroup.Models.ViewModel.Properties
+@model List<PureGreenLandGroup.Models.ViewModel.Reports.ControllerTimeDetailsVM>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Runtime Report";
+}
+<script src="/AdminDashboard/js/bootstrap.bundle.min.js"></script>
+
+<div class="rightSection">
+    <div class="row ">
+        <div class="row">
+            <div class="col-3 mb-2">
+                <select class="form-select" onchange="PropertySearchFilter(event)">
+                    <option>All properties</option>
+                    @if (ViewBag.PropertiesList != null)
+                    {
+                        var propertiesOptions = (List<PropertiesListVM>)ViewBag.PropertiesList;
+                        if (propertiesOptions.Count > 0)
+                        {
+                            foreach (var property in propertiesOptions.OrderBy(m=>m.PropertyName))
+                            {
+                                <option value="@property.Id">@property.PropertyName</option>
+
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="table-responsive pb-3">
+            @if (Model != null && Model.Count > 0)
+            {
+                @await Html.PartialAsync("_controllerRunTimeGrid", Model)
+            }
+        </div>
+    </div>
+</div>
+
+
+<!--Export controller run time report popup begins-->
+<div class="modal fade modal-lg" id="ExportControllerRuntimeReportPopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+                <h5 class="modal-title">Controller Run Time Report</h5>
+                <button type="button" class="btn-close inspectionBtnClose BrokenHeadClosePopupBtn" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="Controller_hdn_Id" />
+                <input type="hidden" id="Controller_hdn_Name" />
+                <input type="hidden" id="Property_hdn_Name" />
+                <input type="hidden" id="startTime_hdn" />
+
+                <div class="row p-2">
+                    <div class="col-2">
+                        <label>Program</label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select" id="ControllerProgramSelectInput" onchange="EnableProgramStartTime(event)">
+                            @* <option disabled> select program</option>
+                            <option>Program A</option>
+                            <option>Program B</option>
+                            <option>Program C</option>
+                            <option>Program D</option> *@
+                        </select>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-2">
+                        <label>Start time</label>
+                    </div>
+                    <div class="col">
+                        <select class="form-select"  id="ProgramStartTimerSelectInput">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" onclick="DownloadControllerRunTimeReport(event)">Export</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Export controller run time report popup ends-->
+

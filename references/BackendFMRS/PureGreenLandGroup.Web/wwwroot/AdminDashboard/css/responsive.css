@@ -1,0 +1,222 @@
+@media (max-height: 800px) {
+    .option .option-text, .brokenhead-option-text {
+        font-size: 14px;
+        line-height: 14px;
+    }
+}
+
+@media (max-height: 550px) {
+    .option .option-text, .brokenhead-option-text {
+        font-size: 12px;
+        line-height: 12px;
+    }
+
+    .brokenhead-option span {
+        font-size: 12px;
+    }
+
+    .brokenhead-dropdown {
+        top: 68px;
+    }
+}
+
+@media (min-height: 1000px) {
+    .option .option-text, .brokenhead-option-text {
+        font-size: 24px;
+        line-height: normal;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .sidebar-bg-min {
+        width: 80px;
+        z-index: 999;
+        display: none;
+    }
+
+    .daysWeekItem {
+        border: 1px solid #c3c3c3;
+        padding: 10px;
+        border-radius: 10px;
+        /*width: 382px;*/
+    }
+
+    .add_input_item2 {
+        position: absolute;
+        top: -8%;
+        right: -15px;
+    }
+
+    a#addmore {
+        position: absolute;
+        top: -7%;
+        right: -9px;
+    }
+
+    td {
+        white-space: nowrap;
+    }
+
+    th {
+        white-space: nowrap;
+    }
+
+    .properties-details .property-card .card .chart-section {
+        justify-content: center;
+    }
+
+
+    /* Dashboard sidebar responsive Nandan P 01/29/2025 starts */
+
+    .sidebar {
+        width: 80px;
+    }
+
+    .active-side-bar {
+        width: 250px;
+    }
+
+    .main-header {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+
+        .main-header.active-main-header {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+        }
+
+    .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+
+    .small-logo {
+        display: block;
+        height: 100%;
+    }
+
+        .small-logo img {
+            height: 100%;
+        }
+
+
+    .sidebar .sidebar-content .nav-menu .nav-item .nav-link .link-name, .show-small-logo, .main-logo {
+        display: none;
+    }
+
+    .sidebar.active-side-bar .sidebar-content .nav-menu .nav-item .nav-link .link-name, .hide-main-logo {
+        display: block;
+    }
+
+    .footerSec {
+        left: 0;
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+
+    /* Dashboard sidebar responsive Nandan P 01/29/2025 ends */
+
+}
+
+
+@media(max-width: 1024px) {
+    .right-sec-large {
+        margin-left: 0px !important;
+    }
+
+    .right-sec.top-header.right-sec-large {
+        width: calc(100% - 0px);
+    }
+
+    .controllerItemName {
+        width: 57.5% !important;
+    }
+
+    /* .zoneissue-outer {
+        height: calc(100vh - 660px) !important;
+        overflow: auto
+    }*/
+    .MainZoneIssuesInputDropDown {
+        inset: auto auto 540px 0px !important;
+    }
+    /*23/10/2024*/
+    .createnewuser-outer .card {
+        width: 100%;
+    }
+
+    .input-group-prepend input {
+        padding: 0px !important;
+    }
+
+    .valueinput-inner {
+        width: 100%;
+    }
+}
+
+@media(max-width: 820px) {
+    .zoneissue-outer {
+        height: calc(100vh - 660px) !important;
+        overflow: auto
+    }
+}
+
+
+
+@media(max-width: 768px) {
+    .controllerItemName {
+        width: 93% !important;
+    }
+
+    th {
+        white-space: nowrap;
+    }
+
+    .zoneissue-outer {
+        height: calc(100vh - 660px) !important;
+        overflow: auto
+    }
+
+    .options .option {
+        padding: 1px 12px;
+    }
+
+    .option .option-text {
+        line-height: 16px;
+    }
+}
+
+@media (max-width: 425px) {
+    .inputDetails.d-flex.align-items-center.justify-content-between {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .inputItem.col {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .controllerItemName {
+        width: 100% !important;
+    }
+
+    .detialsItem {
+        width: 100%;
+    }
+
+    .daysWeekItem {
+        width: auto;
+    }
+
+    a.viewItem {
+        margin-left: 170px;
+        color: blue;
+        text-decoration: underline;
+    }
+
+    .options .option {
+        flex: 1;
+        align-items: center;
+    }
+}

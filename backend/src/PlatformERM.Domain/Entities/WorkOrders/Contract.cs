@@ -1,5 +1,4 @@
 using PlatformERM.Domain.Common;
-using PlatformERM.Domain.Entities.Properties;
 using PlatformERM.Domain.Entities.Estimates;
 using PlatformERM.Domain.Enums;
 

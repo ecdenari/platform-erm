@@ -1,0 +1,161 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Http
+@using PureGreenLandGroup.Utility.Constants
+@inject IHttpContextAccessor Accessor
+@model PureGreenLandGroup.Models.ViewModel.SiteControllerManagement.CreateControllerViewModel
+@{
+        var userInRole = @Accessor.HttpContext?.Session.GetString("LoggedUserRole")?.ToString() ?? string.Empty;
+}
+<div class="rightSection">
+    <div class="d-flex justify-content-end">
+        @if (Model.ControllerViewModel.Id > 0)
+        {
+            if (!string.IsNullOrEmpty(userInRole) && userInRole == UserRole.Admin)
+            {
+                <a class="text-lg-center btn btn-outline-success" id="SeasonalAdjustEditableFormBtn" onclick="MakeSeasonalAdjustEditable()"><i class="fas fa-edit" style="padding-right: 5px;"> </i> EDIT</a>
+
+            }
+        }
+    </div>
+    <div id="req_input_item" class="datainputs_item table-responsive">
+        <table class="table tableMainItem table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Months</th>
+                    <th scope="col">Program A</th>
+                    <th scope="col">Program B</th>
+                    <th scope="col">Program C</th>
+                    <th scope="col">Program D</th>
+                </tr>
+            </thead>
+            <tbody id="SeasonalAdjustTablebody">
+                @{
+
+                    // Get the current culture's DateTimeFormatInfo
+                    DateTimeFormatInfo dateInfo = CultureInfo.CurrentCulture.DateTimeFormat;
+
+                    // Loop through the months (1-12) and print the month names
+                    int counter = 0;
+                    if (Model.ControllerViewModel.Id > 0)
+                    {
+                        for (int month = 1; month <= 12; month++)
+                        {
+                            string monthName = dateInfo.GetMonthName(month);
+                            <input type="hidden" asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].MonthId" />
+                            <input type="hidden" asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ControllerId" />
+                            <tr>
+                                <td>@monthName</td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramA" class="timeZone seclectorItem form-select" style="height:30px; width:80px" disabled>
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            <option value="@percentageData.Id">@percentageData.Value% </option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramB" class="timeZone seclectorItem form-select" style="height:30px; width:80px" disabled>
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            <option value="@percentageData.Id">@percentageData.Value%</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramC" class="timeZone seclectorItem form-select" style="height:30px; width:80px" disabled>
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            <option value="@percentageData.Id">@percentageData.Value%</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramD" class="timeZone seclectorItem form-select" style="height:30px; width:80px" disabled>
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            <option value="@percentageData.Id">@percentageData.Value%</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    }
+                    else
+                    {
+                        for (int month = 1; month <= 12; month++)
+                        {
+                            string monthName = dateInfo.GetMonthName(month);
+                            <input type="hidden" asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].MonthId" />
+                            <input type="hidden" asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ControllerId" />
+                            <tr>
+                                <td>@monthName</td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramA" class="timeZone seclectorItem form-select" style="height:30px; width:80px">
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            if (@percentageData.Value == 100)
+                                            {
+                                                <option value="@percentageData.Value" selected>@percentageData.Value% </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@percentageData.Value">@percentageData.Value% </option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramB" class="timeZone seclectorItem form-select" style="height:30px; width:80px">
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            if (@percentageData.Value == 100)
+                                            {
+                                                <option value="@percentageData.Value" selected>@percentageData.Value% </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@percentageData.Value">@percentageData.Value% </option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramC" class="timeZone seclectorItem form-select" style="height:30px; width:80px">
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            if (@percentageData.Value == 100)
+                                            {
+                                                <option value="@percentageData.Value" selected>@percentageData.Value% </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@percentageData.Value">@percentageData.Value% </option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select asp-for="@Model.SeasonalAdjutMasterViewModels.SeasionalAdjustViewModel[counter].ProgramD" class="timeZone seclectorItem form-select" style="height:30px; width:80px">
+                                        @foreach (var percentageData in Model.SeasonalAdjutMasterViewModels.seasonalAdjustDropdownData)
+                                        {
+                                            if (@percentageData.Value == 100)
+                                            {
+                                                <option value="@percentageData.Value" selected>@percentageData.Value% </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@percentageData.Value">@percentageData.Value% </option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
