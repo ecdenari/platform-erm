@@ -3,8 +3,12 @@ import { Routes, Route } from 'react-router-dom'
 import PageLayout from '../layout/PageLayout'
 import SubNav, { SubNavItem } from '../layout/SubNav'
 import { useBreadcrumbs } from '../hooks/useBreadcrumbs'
-import { PropertiesPage } from './properties/pages/PropertiesPage'
-import { PropertyDetailPage } from './properties/pages/PropertyDetailPage'
+import { 
+  PropertiesPage, 
+  PropertyDetailPage,
+  PropertyCreatePage,
+  PropertyEditPage 
+} from './properties/pages'
 import { PropertyListLab } from './properties/components/PropertyListLab'
 import { 
   List, 
@@ -129,7 +133,9 @@ const Properties: React.FC = () => {
       {/* Main content - SubNav positioning is handled globally */}
       <Routes>
         <Route path="/" element={<PropertiesList />} />
+        <Route path="/new" element={<PropertyCreatePage />} />
         <Route path="/:id" element={<PropertyDetailPage />} />
+        <Route path="/:id/edit" element={<PropertyEditPage />} />
         <Route path="/map" element={<PropertiesMap />} />
         <Route path="/reports" element={<PropertiesReports />} />
         <Route path="/lab" element={<PropertyListLab />} />
