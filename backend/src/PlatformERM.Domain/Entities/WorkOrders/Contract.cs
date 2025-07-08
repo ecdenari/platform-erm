@@ -31,7 +31,7 @@ public class Contract : BaseEntity
     public decimal TotalValue { get; set; } = 0;
     
     // Payment information
-    public PaymentTerms PaymentTerms { get; set; } = PaymentTerms.Net30;
+    public PaymentTerms PaymentTerms { get; set; } = PaymentTerms.Net_30;
     public decimal DownPaymentAmount { get; set; } = 0;
     public decimal DownPaymentPercentage { get; set; } = 0;
     public bool DownPaymentReceived { get; set; } = false;
