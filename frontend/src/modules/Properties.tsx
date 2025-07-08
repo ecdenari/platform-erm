@@ -3,12 +3,15 @@ import { Routes, Route } from 'react-router-dom'
 import PageLayout from '../layout/PageLayout'
 import SubNav, { SubNavItem } from '../layout/SubNav'
 import { useBreadcrumbs } from '../hooks/useBreadcrumbs'
+import { PropertiesPage } from './properties/pages/PropertiesPage'
+import { PropertyDetailPage } from './properties/pages/PropertyDetailPage'
+import { PropertyListLab } from './properties/components/PropertyListLab'
 import { 
-  Plus, 
   List, 
   Map, 
   BarChart3, 
-  Settings 
+  Settings,
+  Beaker 
 } from 'lucide-react'
 
 // Sub-navigation items for Properties module
@@ -33,6 +36,12 @@ const propertySubNavItems: SubNavItem[] = [
     description: 'Property analytics'
   },
   {
+    name: 'Component Lab',
+    href: '/properties/lab',
+    icon: Beaker,
+    description: 'Test component variants'
+  },
+  {
     name: 'Settings',
     href: '/properties/settings',
     icon: Settings,
@@ -40,35 +49,9 @@ const propertySubNavItems: SubNavItem[] = [
   },
 ]
 
-// Sub-components
+// Sub-components wrapper for consistent layout
 const PropertiesList: React.FC = () => {
-  const breadcrumbs = useBreadcrumbs()
-  
-  const actions = (
-    <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-      <Plus className="h-4 w-4 mr-2" />
-      Add Property
-    </button>
-  )
-
-  return (
-    <PageLayout
-      title="Properties"
-      description="Manage your property portfolio with location tracking and property details."
-      breadcrumbs={breadcrumbs}
-      actions={actions}
-    >
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Properties List</h3>
-          <p className="text-gray-600">
-            Properties list view will be implemented here. This will include property management, 
-            location tracking, and property details.
-          </p>
-        </div>
-      </div>
-    </PageLayout>
-  )
+  return <PropertiesPage />
 }
 
 const PropertiesMap: React.FC = () => {
@@ -146,8 +129,10 @@ const Properties: React.FC = () => {
       {/* Main content - SubNav positioning is handled globally */}
       <Routes>
         <Route path="/" element={<PropertiesList />} />
+        <Route path="/:id" element={<PropertyDetailPage />} />
         <Route path="/map" element={<PropertiesMap />} />
         <Route path="/reports" element={<PropertiesReports />} />
+        <Route path="/lab" element={<PropertyListLab />} />
         <Route path="/settings" element={<PropertiesSettings />} />
       </Routes>
     </>
