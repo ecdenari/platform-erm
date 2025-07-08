@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PlatformERM.Application.Common.Interfaces;
+using PlatformERM.Application.Common.Models;
 using PlatformERM.Shared.DTOs.Properties;
 
 namespace PlatformERM.API.Controllers.Internal;

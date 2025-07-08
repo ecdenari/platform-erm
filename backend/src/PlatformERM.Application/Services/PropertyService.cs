@@ -1,5 +1,6 @@
 using AutoMapper;
 using PlatformERM.Application.Common.Interfaces;
+using PlatformERM.Application.Common.Models;
 using PlatformERM.Domain.Entities;
 using PlatformERM.Domain.ValueObjects;
 using PlatformERM.Shared.DTOs.Properties;
