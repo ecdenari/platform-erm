@@ -143,7 +143,7 @@ try
     // Development endpoint for tenant switching
     if (app.Environment.IsDevelopment())
     {
-        app.MapGet("/dev/switch-tenant/{tenantId}", async (string tenantId, ITenantService tenantService) =>
+        app.MapGet("/dev/switch-tenant/{tenantId}", async (string tenantId, ITenantContextService tenantService) =>
         {
             await tenantService.SetTenantAsync(tenantId);
             return Results.Ok(new { message = $"Switched to tenant: {tenantId}" });

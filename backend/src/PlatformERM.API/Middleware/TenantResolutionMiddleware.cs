@@ -1,4 +1,4 @@
-using PlatformERM.Application.Common.Interfaces;
+using PlatformERM.Infrastructure.Common.Interfaces;
 
 namespace PlatformERM.API.Middleware;
 
@@ -13,7 +13,7 @@ public class TenantResolutionMiddleware
         _logger = logger;
     }
 
-    public async Task InvokeAsync(HttpContext context, ITenantService tenantService)
+    public async Task InvokeAsync(HttpContext context, ITenantContextService tenantService)
     {
         try
         {
@@ -21,7 +21,7 @@ public class TenantResolutionMiddleware
             if (context.Request.Headers.TryGetValue("X-Tenant-Id", out var tenantId))
             {
                 await tenantService.SetTenantAsync(tenantId.ToString());
-                _logger.LogInformation("Tenant resolved from header: {TenantId}", tenantId);
+                _logger.LogInformation("Tenant resolved from header: {TenantId}", tenantId.ToString());
             }
             // Resolution strategy 2: JWT claim
             else if (context.User.Identity?.IsAuthenticated == true)
