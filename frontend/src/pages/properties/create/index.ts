@@ -1,4 +1,6 @@
 export { PropertyCreateServiceTitanV1 } from './PropertyCreateServiceTitanV1'
 export { PropertyCreateServiceTitanV2 } from './PropertyCreateServiceTitanV2'
-export { PropertyCreateLMNV1 } from './PropertyCreateLMNV1'
-export { PropertyCreateLMNV2 } from './PropertyCreateLMNV2'
+export { PropertyCreateAspireServiceTitanV1 } from './PropertyCreateAspireServiceTitanV1'
+export { PropertyCreateAspireServiceTitanV2 } from './PropertyCreateAspireServiceTitanV2'
+export { PropertyCreateAspireV1 } from './PropertyCreateAspireV1'
+export { PropertyCreateAspireV2 } from './PropertyCreateAspireV2'

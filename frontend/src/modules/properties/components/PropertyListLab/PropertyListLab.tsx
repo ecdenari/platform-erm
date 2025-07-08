@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { PropertyListServiceTitan } from '../PropertyList/PropertyListServiceTitan'
-import { PropertyListLMN } from '../PropertyList/PropertyListLMN'
+import { PropertyListAspireServiceTitan } from '../PropertyList/PropertyListAspireServiceTitan'
 import { PropertyListAspire } from '../PropertyList/PropertyListAspire'
 import { useProperties } from '../../hooks'
 import { Property } from '../../types'
 
-type PlatformVariant = 'servicetitan' | 'lmn' | 'aspire' | 'compare'
+type PlatformVariant = 'servicetitan' | 'aspire-st' | 'aspire' | 'compare'
 
 export const PropertyListLab: React.FC = () => {
   const [selectedVariant, setSelectedVariant] = useState<PlatformVariant>('compare')
@@ -68,23 +68,22 @@ export const PropertyListLab: React.FC = () => {
           </div>
         )
       
-      case 'lmn':
+      case 'aspire-st':
         return (
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="bg-green-50 px-4 py-2 border-b border-green-200">
               <h3 className="text-sm font-semibold text-green-800">
-                LMN Variant - Landscape Features
+                Aspire/ServiceTitan Combined - Dense with Aspire UI
               </h3>
             </div>
             <div className="p-4 bg-gray-50">
-              <PropertyListLMN
+              <PropertyListAspireServiceTitan
                 properties={properties}
                 loading={isLoading}
                 onPropertyClick={handlePropertyClick}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onNavigate={handleNavigate}
-                onScheduleService={handleScheduleService}
+                onBulkSelect={handleBulkSelect}
               />
             </div>
           </div>
@@ -148,14 +147,14 @@ export const PropertyListLab: React.FC = () => {
                 ServiceTitan
               </button>
               <button
-                onClick={() => setSelectedVariant('lmn')}
+                onClick={() => setSelectedVariant('aspire-st')}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  selectedVariant === 'lmn'
+                  selectedVariant === 'aspire-st'
                     ? 'bg-green-600 text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
-                LMN
+                Aspire/ST
               </button>
               <button
                 onClick={() => setSelectedVariant('aspire')}
@@ -189,13 +188,13 @@ export const PropertyListLab: React.FC = () => {
                   </ul>
                 </div>
                 <div>
-                  <h3 className="font-medium text-green-700 mb-2">LMN</h3>
+                  <h3 className="font-medium text-green-700 mb-2">Aspire/ServiceTitan</h3>
                   <ul className="space-y-1 text-gray-600">
-                    <li>• Card-based layout</li>
-                    <li>• GPS/navigation buttons</li>
-                    <li>• Service scheduling</li>
-                    <li>• Visual property types</li>
-                    <li>• Field-friendly spacing</li>
+                    <li>• Aspire green styling</li>
+                    <li>• ServiceTitan density</li>
+                    <li>• Toolbar with search</li>
+                    <li>• Bulk operations</li>
+                    <li>• Financial metrics</li>
                   </ul>
                 </div>
                 <div>
@@ -213,7 +212,7 @@ export const PropertyListLab: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {renderVariant('servicetitan')}
-              {renderVariant('lmn')}
+              {renderVariant('aspire-st')}
               {renderVariant('aspire')}
             </div>
           </div>

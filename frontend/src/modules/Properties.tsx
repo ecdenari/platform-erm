@@ -9,15 +9,16 @@ import {
   PropertyCreatePage,
   PropertyEditPage 
 } from './properties/pages'
-import { PropertyListLab } from './properties/components/PropertyListLab'
-import { PropertyCreateLab } from '../pages/properties/lab'
+import { PropertyCreateLab, PropertyListLab } from '../pages/properties/lab'
+import { PropertyDetailLab } from '../pages/properties/detail'
 import { 
   List, 
   Map, 
   BarChart3, 
   Settings,
   Beaker,
-  FlaskConical 
+  FlaskConical,
+  Microscope 
 } from 'lucide-react'
 
 // Sub-navigation items for Properties module
@@ -42,16 +43,22 @@ const propertySubNavItems: SubNavItem[] = [
     description: 'Property analytics'
   },
   {
-    name: 'Component Lab',
-    href: '/properties/lab',
+    name: 'List UI Lab',
+    href: '/properties/list-lab',
     icon: Beaker,
-    description: 'Test component variants'
+    description: 'Compare property list layouts'
   },
   {
     name: 'Create UI Lab',
     href: '/properties/create-lab',
     icon: FlaskConical,
-    description: 'Compare property creation UIs'
+    description: 'Compare property creation forms'
+  },
+  {
+    name: 'Detail UI Lab',
+    href: '/properties/detail-lab',
+    icon: Microscope,
+    description: 'Compare property detail layouts'
   },
   {
     name: 'Settings',
@@ -146,8 +153,10 @@ const Properties: React.FC = () => {
         <Route path="/:id/edit" element={<PropertyEditPage />} />
         <Route path="/map" element={<PropertiesMap />} />
         <Route path="/reports" element={<PropertiesReports />} />
-        <Route path="/lab" element={<PropertyListLab />} />
+        <Route path="/list-lab" element={<PropertyListLab />} />
         <Route path="/create-lab" element={<PropertyCreateLab />} />
+        <Route path="/detail-lab" element={<PropertyDetailLab />} />
+        <Route path="/:id/detail-lab" element={<PropertyDetailLab />} />
         <Route path="/settings" element={<PropertiesSettings />} />
       </Routes>
     </>

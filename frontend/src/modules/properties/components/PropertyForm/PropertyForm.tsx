@@ -49,9 +49,10 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
       newErrors.name = 'Property name is required'
     }
     
-    if (!formData.companyId || formData.companyId === 0) {
-      newErrors.companyId = 'Company is required'
-    }
+    // Temporarily comment out company requirement for testing
+    // if (!formData.companyId || formData.companyId === 0) {
+    //   newErrors.companyId = 'Company is required'
+    // }
     
     if (!formData.address?.street.trim()) {
       newErrors['address.street'] = 'Street address is required'
@@ -87,6 +88,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
           data: formData as UpdateProperty
         })
       } else {
+        console.log('Sending property data:', formData)
         await createPropertyMutation.mutateAsync(formData as CreateProperty)
       }
       

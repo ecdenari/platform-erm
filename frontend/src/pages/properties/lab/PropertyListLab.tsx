@@ -1,23 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
   Monitor, Smartphone, Tablet, Grid, List, 
   ChevronLeft, ChevronRight, Maximize2, X,
   Eye, EyeOff, Settings, Download, Share2,
   Palette, Layout, Zap, Map, Workflow, Building,
-  BarChart, Layers
+  BarChart, Database, Table2, MapPinned, Target
 } from 'lucide-react'
-import { PropertyCreateServiceTitanV1 } from '../create/PropertyCreateServiceTitanV1'
-import { PropertyCreateServiceTitanV2 } from '../create/PropertyCreateServiceTitanV2'
-import { PropertyCreateAspireServiceTitanV1 } from '../create/PropertyCreateAspireServiceTitanV1'
-import { PropertyCreateAspireServiceTitanV2 } from '../create/PropertyCreateAspireServiceTitanV2'
-import { PropertyCreateAspireV1 } from '../create/PropertyCreateAspireV1'
-import { PropertyCreateAspireV2 } from '../create/PropertyCreateAspireV2'
-import { ComparisonSummary } from './ComparisonSummary'
+import { 
+  PropertyListServiceTitan,
+  PropertyListServiceTitanV2,
+  PropertyListAspireServiceTitan,
+  PropertyListAspireServiceTitanV2,
+  PropertyListAspireV1,
+  PropertyListAspireV2
+} from '../../../modules/properties/components/PropertyList'
+import { Property, PropertyStatus, PropertyType } from '../../../modules/properties/types'
 
 type ViewMode = 'single' | 'split' | 'grid'
 type DeviceMode = 'desktop' | 'tablet' | 'mobile'
-type VariantKey = 'servicetitan-v1' | 'servicetitan-v2' | 'aspire-servicetitan-v1' | 'aspire-servicetitan-v2' | 'aspire-v1' | 'aspire-v2'
+type VariantKey = 'servicetitan-v1' | 'servicetitan-v2' | 'aspire-st-v1' | 'aspire-st-v2' | 'aspire-v1' | 'aspire-v2'
 
 interface Variant {
   key: VariantKey
@@ -27,85 +29,135 @@ interface Variant {
   description: string
   icon: React.ElementType
   color: string
-  component: React.ComponentType
+  component: React.ComponentType<any>
   characteristics: string[]
 }
 
-export const PropertyCreateLab: React.FC = () => {
+export const PropertyListLab: React.FC = () => {
   const navigate = useNavigate()
   const [viewMode, setViewMode] = useState<ViewMode>('split')
   const [deviceMode, setDeviceMode] = useState<DeviceMode>('desktop')
-  const [selectedVariants, setSelectedVariants] = useState<VariantKey[]>(['servicetitan-v1', 'aspire-servicetitan-v1'])
+  const [selectedVariants, setSelectedVariants] = useState<VariantKey[]>(['servicetitan-v1', 'aspire-st-v1'])
   const [showControls, setShowControls] = useState(true)
   const [fullscreenVariant, setFullscreenVariant] = useState<VariantKey | null>(null)
   const [showComparison, setShowComparison] = useState(false)
+  const [propertyCount, setPropertyCount] = useState(25)
+
+  // Generate mock properties
+  const mockProperties: Property[] = Array.from({ length: propertyCount }, (_, i) => ({
+    id: i + 1,
+    name: [
+      'Summit Office Park',
+      'Greenwood Plaza',
+      'Downtown Tower',
+      'Riverside Business Center',
+      'Tech Hub Campus',
+      'Medical Plaza',
+      'Industrial Complex A',
+      'Retail Shopping Center',
+      'Municipal Building',
+      'University Commons'
+    ][i % 10] + (i >= 10 ? ` ${Math.floor(i / 10) + 1}` : ''),
+    companyName: [
+      'ABC Commercial Properties',
+      'XYZ Property Management',
+      'Summit Office Group',
+      'Elite Properties LLC',
+      'Metro Real Estate'
+    ][i % 5],
+    address: {
+      street: `${1000 + i * 100} ${['Main', 'Oak', 'Elm', 'Park', 'First'][i % 5]} Street`,
+      city: ['Denver', 'Boulder', 'Aurora', 'Lakewood', 'Westminster'][i % 5],
+      state: 'CO',
+      zipCode: `${80200 + (i % 100)}`.padStart(5, '0')
+    },
+    propertyType: [
+      PropertyType.Commercial,
+      PropertyType.Residential,
+      PropertyType.Industrial,
+      PropertyType.Mixed,
+      PropertyType.Vacant
+    ][i % 5],
+    status: [
+      PropertyStatus.Active,
+      PropertyStatus.Active,
+      PropertyStatus.Active,
+      PropertyStatus.Inactive,
+      PropertyStatus.Pending
+    ][i % 5],
+    squareFootage: (Math.floor(Math.random() * 50) + 10) * 1000,
+    acreageSize: parseFloat((Math.random() * 5 + 0.5).toFixed(2)),
+    primaryContactId: Math.floor(Math.random() * 10) + 1,
+    createdAt: new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
+  }))
 
   const variants: Variant[] = [
     {
       key: 'servicetitan-v1',
       name: 'ServiceTitan V1',
       platform: 'ServiceTitan',
-      version: 'Maximum Density',
-      description: 'Ultra-dense 3-column layout with everything on one screen',
-      icon: Grid,
+      version: 'Classic Dense Table',
+      description: 'Ultra-dense table with maximum information per row',
+      icon: Table2,
       color: 'blue',
-      component: PropertyCreateServiceTitanV1,
-      characteristics: ['3-column grid', 'Minimal spacing', 'Quick actions', 'Single page']
+      component: PropertyListServiceTitan,
+      characteristics: ['Dense table', 'Compact rows', 'Hover actions', 'Professional']
     },
     {
       key: 'servicetitan-v2',
       name: 'ServiceTitan V2',
       platform: 'ServiceTitan',
-      version: 'Tabbed Sections',
-      description: 'Organized tabs with keyboard shortcuts for efficient navigation',
-      icon: Layout,
+      version: 'Enhanced Table',
+      description: 'Expandable rows with inline financial metrics',
+      icon: Database,
       color: 'blue',
-      component: PropertyCreateServiceTitanV2,
-      characteristics: ['Horizontal tabs', 'Keyboard shortcuts', 'Organized sections', 'Compact design']
+      component: PropertyListServiceTitanV2,
+      characteristics: ['Expandable rows', 'Financial focus', 'Bulk operations', 'Quick stats']
     },
     {
-      key: 'aspire-servicetitan-v1',
-      name: 'Aspire-ServiceTitan V1',
-      platform: 'Aspire + ServiceTitan',
-      version: 'Dense Grid Layout',
-      description: 'Full-page dense grid combining Aspire green styling with ServiceTitan efficiency',
+      key: 'aspire-st-v1',
+      name: 'Aspire/ServiceTitan V1',
+      platform: 'Combined',
+      version: 'Dense Table + Aspire UI',
+      description: 'ServiceTitan density with Aspire green accents and toolbar',
       icon: Grid,
       color: 'green',
-      component: PropertyCreateAspireServiceTitanV1,
-      characteristics: ['3-column grid', 'Aspire hierarchy', 'Dense layout', 'All sections visible']
+      component: PropertyListAspireServiceTitan,
+      characteristics: ['Aspire toolbar', 'Dense table', 'Green accents', 'Search & filters']
     },
     {
-      key: 'aspire-servicetitan-v2',
-      name: 'Aspire-ServiceTitan V2',
-      platform: 'Aspire + ServiceTitan',
-      version: 'Sectioned Workflow',
-      description: 'Full-page sectioned layout with Aspire workflow and ServiceTitan density',
-      icon: Layers,
+      key: 'aspire-st-v2',
+      name: 'Aspire/ServiceTitan V2',
+      platform: 'Combined',
+      version: 'Enhanced Expandable',
+      description: 'Expandable rows with financial metrics and Aspire styling',
+      icon: Database,
       color: 'green',
-      component: PropertyCreateAspireServiceTitanV2,
-      characteristics: ['Sidebar navigation', 'Aspire green', 'Section-based', 'Professional flow']
+      component: PropertyListAspireServiceTitanV2,
+      characteristics: ['Expandable rows', 'Filter pills', 'Financial data', 'Management info']
     },
     {
       key: 'aspire-v1',
       name: 'Aspire V1',
       platform: 'Aspire',
-      version: 'Commercial Hierarchy',
-      description: 'Commercial hierarchy focus with company-first approach',
+      version: 'Company Hierarchy',
+      description: 'Company-grouped view with commercial focus',
       icon: Building,
       color: 'purple',
-      component: PropertyCreateAspireV1,
-      characteristics: ['Company hierarchy', 'Professional', 'Contract ready', 'B2B focus']
+      component: PropertyListAspireV1,
+      characteristics: ['Company groups', 'Financial summary', 'Contract focus', 'Professional']
     },
     {
       key: 'aspire-v2',
       name: 'Aspire V2',
       platform: 'Aspire',
-      version: 'Opportunity Ready',
-      description: 'Streamlined for opportunity creation with minimal fields',
-      icon: Zap,
+      version: 'Opportunity Pipeline',
+      description: 'Opportunity-focused cards with quick actions',
+      icon: Target,
       color: 'purple',
-      component: PropertyCreateAspireV2,
-      characteristics: ['Opportunity ready', 'Minimal fields', 'Takeoff integration', 'Quick create']
+      component: PropertyListAspireV2,
+      characteristics: ['Opportunity metrics', 'Quick actions', 'Renewal tracking', 'Modern cards']
     }
   ]
 
@@ -114,7 +166,7 @@ export const PropertyCreateLab: React.FC = () => {
       case 'mobile':
         return 'max-w-sm mx-auto'
       case 'tablet':
-        return 'max-w-2xl mx-auto'
+        return 'max-w-3xl mx-auto'
       default:
         return 'w-full'
     }
@@ -168,7 +220,13 @@ export const PropertyCreateLab: React.FC = () => {
         
         {/* Component Content */}
         <div className="pt-16 h-full overflow-auto">
-          <Component />
+          <Component 
+            properties={mockProperties}
+            loading={false}
+            onPropertyClick={(property) => console.log('Property clicked:', property)}
+            onEdit={(property) => console.log('Edit property:', property)}
+            onDelete={(property) => console.log('Delete property:', property)}
+          />
         </div>
       </div>
     )
@@ -189,7 +247,15 @@ export const PropertyCreateLab: React.FC = () => {
             <X className="h-5 w-5" />
           </button>
         </div>
-        <Component />
+        <div className="p-6 h-full overflow-auto">
+          <Component 
+            properties={mockProperties}
+            loading={false}
+            onPropertyClick={(property) => console.log('Property clicked:', property)}
+            onEdit={(property) => console.log('Edit property:', property)}
+            onDelete={(property) => console.log('Delete property:', property)}
+          />
+        </div>
       </div>
     )
   }
@@ -208,12 +274,27 @@ export const PropertyCreateLab: React.FC = () => {
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">Property Create UI Lab</h1>
-                <p className="text-sm text-gray-500">Compare and test different UI approaches</p>
+                <h1 className="text-xl font-semibold text-gray-900">Property List UI Lab</h1>
+                <p className="text-sm text-gray-500">Compare different list and table approaches</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
+              {/* Property Count Control */}
+              <div className="flex items-center space-x-2">
+                <label className="text-sm text-gray-600">Properties:</label>
+                <select
+                  value={propertyCount}
+                  onChange={(e) => setPropertyCount(Number(e.target.value))}
+                  className="px-3 py-1 border border-gray-300 rounded-md text-sm"
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
+              
               {/* View Mode Toggle */}
               <div className="flex items-center bg-gray-100 rounded-lg p-1">
                 <button
@@ -272,17 +353,6 @@ export const PropertyCreateLab: React.FC = () => {
                   <Smartphone className="h-4 w-4" />
                 </button>
               </div>
-              
-              {/* Comparison Toggle */}
-              <button
-                onClick={() => setShowComparison(!showComparison)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showComparison ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:text-gray-900'
-                }`}
-                title="Show comparison matrix"
-              >
-                <BarChart className="h-5 w-5" />
-              </button>
               
               {/* Controls Toggle */}
               <button
@@ -355,13 +425,6 @@ export const PropertyCreateLab: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
-      )}
-
-      {/* Comparison Matrix */}
-      {showComparison && (
-        <div className="p-4">
-          <ComparisonSummary />
         </div>
       )}
 

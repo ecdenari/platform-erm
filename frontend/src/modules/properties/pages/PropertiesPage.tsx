@@ -18,7 +18,9 @@ export const PropertiesPage: React.FC = () => {
   const deletePropertyMutation = useDeleteProperty()
 
   const handlePropertyClick = (property: Property) => {
-    navigate(`/properties/${property.id}`)
+    // For testing, navigate to detail lab with the property ID
+    // In production, this would go to the standard detail page
+    navigate(`/properties/${property.id}/detail-lab`)
   }
 
   const handleEdit = (property: Property) => {
