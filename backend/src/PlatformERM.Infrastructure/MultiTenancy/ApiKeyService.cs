@@ -30,7 +30,7 @@ public class ApiKeyService : IApiKeyService
         using var scope = _serviceProvider.CreateScope();
         using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        var tenant = await context.Tenants.FirstOrDefaultAsync(t => t.Id == tenantId);
+        var tenant = await context.Tenants.FirstOrDefaultAsync(t => t.Identifier == tenantId);
         if (tenant == null)
         {
             throw new ArgumentException($"Tenant {tenantId} not found");
@@ -48,7 +48,7 @@ public class ApiKeyService : IApiKeyService
         using var scope = _serviceProvider.CreateScope();
         using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        var tenant = await context.Tenants.FirstOrDefaultAsync(t => t.Id == tenantId);
+        var tenant = await context.Tenants.FirstOrDefaultAsync(t => t.Identifier == tenantId);
         if (tenant == null)
         {
             throw new ArgumentException($"Tenant {tenantId} not found");

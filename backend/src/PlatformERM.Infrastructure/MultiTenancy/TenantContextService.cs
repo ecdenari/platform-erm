@@ -40,7 +40,7 @@ public class TenantContextService : ITenantContextService
 
         if (tenant != null)
         {
-            _currentTenant = tenant.Id;
+            _currentTenant = tenant.Identifier;
         }
         else
         {
@@ -61,6 +61,6 @@ public class TenantContextService : ITenantContextService
         
         return await context.Tenants
             .AsNoTracking()
-            .AnyAsync(t => t.Id == tenantId && t.IsActive);
+            .AnyAsync(t => t.Identifier == tenantId && t.IsActive);
     }
 }
