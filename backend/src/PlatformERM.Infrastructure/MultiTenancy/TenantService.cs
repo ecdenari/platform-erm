@@ -50,6 +50,12 @@ public class TenantService : ITenantService
 
     public async Task<bool> IsTenantValidAsync(string tenantId)
     {
+        // Always allow "demo" tenant for development
+        if (tenantId == "demo")
+        {
+            return true;
+        }
+        
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
