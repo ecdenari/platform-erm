@@ -20,9 +20,13 @@ api.interceptors.request.use(
     }
 
     // Add tenant header for development
-    const tenantId = localStorage.getItem('dev-tenant-id')
-    if (tenantId && import.meta.env.DEV) {
+    const tenantId = localStorage.getItem('dev-tenant-id') || '1'
+    if (import.meta.env.DEV) {
       config.headers['X-Tenant-Id'] = tenantId
+      // Also set a default tenant ID in localStorage for consistency
+      if (!localStorage.getItem('dev-tenant-id')) {
+        localStorage.setItem('dev-tenant-id', '1')
+      }
     }
 
     return config
@@ -39,7 +43,13 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access
+      // Skip redirect in development mode for now
+      if (import.meta.env.DEV) {
+        console.warn('401 Unauthorized - Auth not implemented yet')
+        return Promise.reject(error)
+      }
+      
+      // Handle unauthorized access in production
       localStorage.removeItem('auth-token')
       window.location.href = '/login'
     }
