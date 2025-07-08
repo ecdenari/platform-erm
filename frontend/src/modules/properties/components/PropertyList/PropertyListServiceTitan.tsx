@@ -83,11 +83,12 @@ export const PropertyListServiceTitan: React.FC<PropertyListServiceTitanProps> =
   }
 
   return (
-    <div className={styles.table.container}>
-      <table className="w-full">
-        <thead className={styles.table.header}>
-          <tr>
-            <th className={`${styles.table.headerCell} w-8`}>
+    <div className="w-full">
+      <div className={styles.table.container}>
+        <table className="w-full">
+          <thead className={styles.table.header}>
+            <tr>
+              <th className={`${styles.table.headerCell} w-8`}>
               <input
                 type="checkbox"
                 className="h-3 w-3"
@@ -194,6 +195,7 @@ export const PropertyListServiceTitan: React.FC<PropertyListServiceTitanProps> =
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }
