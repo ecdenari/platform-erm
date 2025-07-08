@@ -33,39 +33,42 @@ export const useTenantContext = () => {
 }
 
 export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [tenant, setTenant] = useState<TenantInfo | null>(null)
-  const [loading, setLoading] = useState(true)
+  // Initialize with demo tenant in dev mode to prevent flashing
+  const [tenant, setTenant] = useState<TenantInfo | null>(
+    import.meta.env.DEV ? {
+      id: 'demo',
+      name: 'Demo Company',
+      subdomain: 'demo',
+      features: ['properties', 'contacts', 'workorders'],
+      branding: {
+        primaryColor: '#3b82f6',
+      },
+    } : null
+  )
+  const [loading, setLoading] = useState(false) // Set to false since we have default tenant
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    // Skip tenant resolution in development - we already have default tenant
+    if (import.meta.env.DEV) {
+      return
+    }
+    
+    // Production logic - will implement when tenant endpoints are ready
     const resolveTenant = async () => {
+      setLoading(true)
       try {
-        // For development, try to get tenant from localStorage first
         const devTenantId = localStorage.getItem('dev-tenant-id')
-        if (devTenantId && import.meta.env.DEV) {
+        if (devTenantId) {
           const response = await api.get(`/api/internal/tenants/${devTenantId}`)
           setTenant(response.data)
         } else {
-          // Try to resolve tenant from current context
           const response = await api.get('/api/internal/tenants/current')
           setTenant(response.data)
         }
       } catch (err) {
         console.error('Error resolving tenant:', err)
         setError('Unable to resolve tenant')
-        
-        // For development, set a default tenant
-        if (import.meta.env.DEV) {
-          setTenant({
-            id: 'demo',
-            name: 'Demo Company',
-            subdomain: 'demo',
-            features: ['properties', 'contacts', 'workorders'],
-            branding: {
-              primaryColor: '#3b82f6',
-            },
-          })
-        }
       } finally {
         setLoading(false)
       }
