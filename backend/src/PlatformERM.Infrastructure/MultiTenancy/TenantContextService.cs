@@ -10,7 +10,7 @@ public class TenantContextService : ITenantContextService
     private readonly IServiceProvider _serviceProvider;
     private string _currentTenant = "demo"; // Default tenant for development
 
-    public TenantService(IServiceProvider serviceProvider)
+    public TenantContextService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
