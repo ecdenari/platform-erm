@@ -39,7 +39,13 @@ public class TenantResolutionMiddleware
                 var host = context.Request.Host.Value;
                 var subdomain = host.Split('.')[0];
                 
-                if (!string.IsNullOrEmpty(subdomain) && subdomain != "app" && subdomain != "api" && subdomain != "localhost")
+                // Development bypass for localhost
+                if (subdomain == "localhost" || host.StartsWith("localhost:"))
+                {
+                    await tenantService.SetTenantAsync("demo");
+                    _logger.LogInformation("Tenant set to 'demo' for localhost development");
+                }
+                else if (!string.IsNullOrEmpty(subdomain) && subdomain != "app" && subdomain != "api")
                 {
                     await tenantService.SetTenantBySubdomainAsync(subdomain);
                     _logger.LogInformation("Tenant resolved from subdomain: {Subdomain}", subdomain);
