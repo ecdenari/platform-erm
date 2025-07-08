@@ -28,17 +28,37 @@ Rename terminal window for clarity:
    - Check for any pending database migrations
    - Verify backend builds: `cd backend && dotnet build`
 
-3. **Coordination Review**
+3. **Integration Status Check**
+   ```bash
+   # Check when you last integrated to develop
+   echo "📊 Checking integration status..."
+   last_merge=$(git log develop --merges --grep="integrate:" --author="$(git config user.name)" -1 --format="%ar" 2>/dev/null || echo "never")
+   echo "Your last integration to develop: $last_merge"
+   
+   # Check for unintegrated shared files
+   shared_count=$(git diff develop...HEAD --name-only 2>/dev/null | grep -E "(shared/|Dto\.cs|\.migration\.cs|api/)" | wc -l)
+   if [ $shared_count -gt 0 ]; then
+       echo "⚠️  You have $shared_count shared files not yet in develop!"
+       echo "Consider running integration soon."
+   fi
+   
+   # Time-based reminder
+   if [[ $last_merge == *"hours"* ]] && [[ ! $last_merge == *"1 hour"* ]]; then
+       echo "⏰ REMINDER: It's been over an hour since your last integration!"
+   fi
+   ```
+
+4. **Coordination Review**
    - Check `/docs/tracking/completion-log.md` for project milestones
    - Review GitHub issues requiring coordination or architecture decisions
    - Look for Agent 1 requests for API changes or new endpoints
 
-4. **Documentation & Architecture**
+5. **Documentation & Architecture**
    - Verify `/docs/development/feature-relationships.md` is current
    - Check for any new feature plans requiring backend support
    - Review CLAUDE.md for any coordination protocol updates
 
-5. **Development Environment**
+6. **Development Environment**
    - Ensure PostgreSQL is running
    - Verify backend can start: `cd backend/src/PlatformERM.API && dotnet run`
    - API will be at https://localhost:59818

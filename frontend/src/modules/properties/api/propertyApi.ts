@@ -1,17 +1,17 @@
-import api from '../../../api/client'
-import type {
+import { apiClient } from '../../../api/client'
+import {
   Property,
   PropertyDetail,
   CreateProperty,
   UpdateProperty,
   PropertyListResponse,
   PropertyFilters
-} from '../types/property.types'
+} from '../types'
 
 const PROPERTIES_BASE_URL = '/api/internal/properties'
 
 export const propertyApi = {
-  // Get all properties with filtering and pagination
+  // Get paginated list of properties
   getProperties: async (filters?: PropertyFilters): Promise<PropertyListResponse> => {
     const params = new URLSearchParams()
     
@@ -26,31 +26,33 @@ export const propertyApi = {
       if (filters.pageSize) params.append('pageSize', filters.pageSize.toString())
     }
     
-    const response = await api.get(`${PROPERTIES_BASE_URL}?${params.toString()}`)
-    return response.data
+    const { data } = await apiClient.get<PropertyListResponse>(
+      `${PROPERTIES_BASE_URL}?${params.toString()}`
+    )
+    return data
   },
 
-  // Get a single property by ID
+  // Get single property with full details
   getProperty: async (id: number): Promise<PropertyDetail> => {
-    const response = await api.get(`${PROPERTIES_BASE_URL}/${id}`)
-    return response.data
+    const { data } = await apiClient.get<PropertyDetail>(`${PROPERTIES_BASE_URL}/${id}`)
+    return data
   },
 
-  // Create a new property
+  // Create new property
   createProperty: async (property: CreateProperty): Promise<Property> => {
-    const response = await api.post(PROPERTIES_BASE_URL, property)
-    return response.data
+    const { data } = await apiClient.post<Property>(PROPERTIES_BASE_URL, property)
+    return data
   },
 
-  // Update an existing property
+  // Update existing property
   updateProperty: async (id: number, property: UpdateProperty): Promise<Property> => {
-    const response = await api.put(`${PROPERTIES_BASE_URL}/${id}`, property)
-    return response.data
+    const { data } = await apiClient.put<Property>(`${PROPERTIES_BASE_URL}/${id}`, property)
+    return data
   },
 
-  // Delete a property
+  // Delete property (soft delete)
   deleteProperty: async (id: number): Promise<void> => {
-    await api.delete(`${PROPERTIES_BASE_URL}/${id}`)
+    await apiClient.delete(`${PROPERTIES_BASE_URL}/${id}`)
   },
 
   // Export properties to CSV
@@ -64,9 +66,23 @@ export const propertyApi = {
       if (filters.companyId) params.append('companyId', filters.companyId.toString())
     }
     
-    const response = await api.get(`${PROPERTIES_BASE_URL}/export?${params.toString()}`, {
+    const { data } = await apiClient.get(`${PROPERTIES_BASE_URL}/export?${params.toString()}`, {
       responseType: 'blob'
     })
-    return response.data
+    return data
+  },
+
+  // Bulk update properties
+  bulkUpdateProperties: async (propertyIds: number[], updates: Partial<UpdateProperty>): Promise<void> => {
+    await apiClient.patch(`${PROPERTIES_BASE_URL}/bulk`, {
+      propertyIds,
+      updates
+    })
+  },
+
+  // Get properties by company
+  getPropertiesByCompany: async (companyId: number): Promise<Property[]> => {
+    const { data } = await apiClient.get<Property[]>(`${PROPERTIES_BASE_URL}/company/${companyId}`)
+    return data
   }
 }

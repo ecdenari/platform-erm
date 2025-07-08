@@ -1,0 +1,45 @@
+#!/bin/bash
+# Git hook that runs after every commit to check for shared files
+
+# Colors for output
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+# Check if the commit includes shared files
+shared_files=$(git diff HEAD~1..HEAD --name-only 2>/dev/null | grep -E "(shared/|\.types\.ts|api/|frontend/src/types/|backend/.*Dto\.cs|\.migration\.cs)" || true)
+
+if [ ! -z "$shared_files" ]; then
+    echo ""
+    echo -e "${YELLOW}⚠️  SHARED FILES DETECTED IN YOUR COMMIT!${NC}"
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo "The following shared files were modified:"
+    echo "$shared_files" | sed 's/^/  • /'
+    echo ""
+    echo -e "${RED}These changes need to be integrated to develop branch ASAP!${NC}"
+    echo ""
+    echo "To integrate now, run:"
+    echo -e "${GREEN}  git push origin $(git branch --show-current)${NC}"
+    echo -e "${GREEN}  git checkout develop && git pull origin develop${NC}"
+    echo -e "${GREEN}  git merge $(git branch --show-current) --no-ff -m \"integrate: $(git log -1 --pretty=%s | cut -d: -f2)\"${NC}"
+    echo -e "${GREEN}  git push origin develop${NC}"
+    echo -e "${GREEN}  git checkout $(git branch --show-current)${NC}"
+    echo ""
+fi
+
+# Check time since last integration
+current_branch=$(git branch --show-current)
+if [ "$current_branch" != "main" ] && [ "$current_branch" != "develop" ]; then
+    last_merge=$(git log develop --merges --grep="integrate:" --author="$(git config user.name)" -1 --format="%ar" 2>/dev/null || echo "never")
+    
+    # Parse the time
+    if [[ $last_merge == *"hours"* ]] || [[ $last_merge == *"days"* ]] || [[ $last_merge == "never" ]]; then
+        if [[ ! $last_merge == *"1 hour"* ]]; then
+            echo -e "${YELLOW}⏰ INTEGRATION REMINDER${NC}"
+            echo -e "Your last integration to develop: ${RED}$last_merge${NC}"
+            echo "Consider integrating your changes to develop branch soon!"
+            echo ""
+        fi
+    fi
+fi

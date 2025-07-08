@@ -1,3 +1,6 @@
+# Reference code (use external repository instead)
+references/
+
 # .NET Core
 bin/
 obj/

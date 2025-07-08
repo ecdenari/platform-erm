@@ -1,59 +1,87 @@
 ## Description
-
-Brief description of what this PR does.
+Brief description of changes and the problem they solve.
 
 ## Type of Change
-
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Documentation update
+- [ ] Refactoring (no functional changes)
 - [ ] Performance improvement
-- [ ] Code refactoring
+- [ ] Code cleanup
 
-## Agent Checklist
-
+## Agent Information
 **Submitting Agent**: Agent [1/2/3] - [Frontend/Backend/Mobile]
+**Current Branch**: `feature/[branch-name]`
 
-**Cross-Agent Impact**:
+## Cross-Agent Impact
 - [ ] No impact on other agents
 - [ ] Requires coordination with Agent 1 (Frontend)
 - [ ] Requires coordination with Agent 2 (Backend)
 - [ ] Requires coordination with Agent 3 (Mobile)
 
-## Testing
+**Shared files modified:**
+- List any shared types, API contracts, or cross-agent files
 
+## Testing Checklist
 - [ ] Unit tests pass
-- [ ] Integration tests pass
+- [ ] Integration tests pass (if applicable)
 - [ ] Manual testing completed
 - [ ] Multi-tenant scenarios tested
+- [ ] No cross-tenant data leakage
 
 ## Multi-Tenant Compliance
+- [ ] TenantId properly scoped in all queries
+- [ ] Global query filters applied where needed
+- [ ] Audit fields include tenant context
+- [ ] API endpoints validate tenant access
 
-- [ ] TenantId properly scoped
-- [ ] No cross-tenant data leakage
-- [ ] Global query filters applied
-- [ ] Audit trails include tenant context
+## Code Quality
+- [ ] Code follows project style guidelines
+- [ ] Self-review completed
+- [ ] Complex logic is commented
+- [ ] No hardcoded values or secrets
+- [ ] Error handling implemented
 
-## Screenshots (if applicable)
+## Documentation
+- [ ] Code changes are documented
+- [ ] API changes documented (if applicable)
+- [ ] README updated (if needed)
+- [ ] CLAUDE.md updated (if architecture changes)
 
-Add screenshots to help reviewers understand UI changes.
+## Screenshots (if UI changes)
+Add screenshots to help reviewers understand visual changes.
+
+## Database Changes
+- [ ] No database changes
+- [ ] Migration files included
+- [ ] Migration tested up and down
+- [ ] Seed data updated if needed
+
+## Performance Impact
+- [ ] No significant performance impact
+- [ ] Performance improvements made
+- [ ] Potential performance concerns (explain below)
+
+## Security Checklist
+- [ ] No security vulnerabilities introduced
+- [ ] Authentication/authorization properly implemented
+- [ ] Input validation added where needed
+- [ ] No sensitive data exposed in logs
 
 ## Related Issues
-
 Closes #[issue number]
 
-## Checklist
+## Next Steps
+- [ ] Merge to develop branch for integration
+- [ ] Other agents need to pull latest develop
+- [ ] Follow-up tasks needed (list below)
 
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] I have updated `/docs/tracking/completion-log.md` if this is a major feature
+## Reviewer Notes
+**Specific areas to review:**
+- 
+- 
 
-## Additional Notes
-
-Any additional information that reviewers should know.
+**Questions for reviewers:**
+- 
+- 

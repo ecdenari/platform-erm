@@ -1,37 +1,47 @@
 ---
-name: Feature request
-about: Suggest an idea for Platform-ERM
+name: Feature Request
+about: Suggest a new feature for Platform-ERM
 title: '[FEATURE] '
-labels: enhancement
+labels: feature
 assignees: ''
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
-
-**Describe the solution you'd like**
+## Feature Description
 A clear and concise description of what you want to happen.
 
-**Describe alternatives you've considered**
+## Problem Statement
+Is your feature request related to a problem? Please describe.
+Ex. I'm always frustrated when [...]
+
+## Proposed Solution
+Describe the solution you'd like.
+
+## Alternative Solutions
 A clear and concise description of any alternative solutions or features you've considered.
 
-**Business Value**
+## Business Value
 - How does this improve upon Aspire ERP limitations?
 - How does this differentiate from LMN?
 - What value does it bring to landscape businesses?
 
-**Technical Considerations**
+## Technical Considerations
 - [ ] Multi-tenant compatible
 - [ ] Mobile-friendly
 - [ ] API changes required
 - [ ] Database schema changes
 - [ ] Performance impact
 
-**Agent Assignment**
+## Agent Assignment
 Which agents would need to work on this?
 - [ ] Agent 1 (Frontend UI/UX)
 - [ ] Agent 2 (Backend/API)
 - [ ] Agent 3 (Mobile/Integration)
+- **Coordination needed**: Which agents need to coordinate
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Implementation Notes
+- **Backend considerations**: API design, database schema
+- **Frontend considerations**: Component design, token usage
+- **Testing requirements**: Unit, integration, e2e tests needed
+
+## Additional Context
+Add any other context, mockups, or screenshots about the feature request here.

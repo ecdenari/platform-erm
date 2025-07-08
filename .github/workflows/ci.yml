@@ -72,6 +72,21 @@ jobs:
     needs: [backend-test, frontend-test]
     if: github.event_name == 'pull_request'
     
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: platformerm_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
     steps:
     - uses: actions/checkout@v3
     
@@ -79,16 +94,13 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    
+        
     - name: Run integration tests
       run: |
-        echo "Integration tests will be implemented by Agent 3"
-        echo "Placeholder for now"
+        cd backend
+        dotnet test --filter Category=Integration
+      env:
+        ConnectionStrings__DefaultConnection: Host=localhost;Database=platformerm_test;Username=postgres;Password=postgres
 
   code-quality:
     name: Code Quality Checks
@@ -99,9 +111,9 @@ jobs:
     
     - name: Check for large files
       run: |
-        find . -type f -size +1M -not -path "./.git/*" -exec ls -lh {} \; | awk '{print $5 " " $9}'
+        find . -type f -size +1M -not -path "./.git/*" -not -path "./references/*" -exec ls -lh {} \; | awk '{print $5 " " $9}'
     
     - name: Check for secrets
       run: |
         # Basic check for common secret patterns
-        ! grep -r "password\s*=\s*['\"][^'\"]\+['\"]" --include="*.cs" --include="*.ts" --include="*.tsx" --include="*.js" .
+        ! grep -r "password\s*=\s*['\"][^'\"]\+['\"]" --include="*.cs" --include="*.ts" --include="*.tsx" --include="*.js" --exclude-dir="references" .

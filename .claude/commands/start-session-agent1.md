@@ -20,25 +20,45 @@ Rename terminal window for clarity:
 2. **Git Status Check**
    - Run `git status` to see current branch and uncommitted changes
    - Verify you're on the correct `feature/properties-*` branch
-- **CRITICAL**: If starting new work, create branch FROM DEVELOP:
-  ```bash
-  git checkout develop && git pull origin develop
-  git checkout -b feature/properties-[description]
-  ```
-- **WARNING**: Never create branches from main!
-   - Check if you need to pull latest from develop: `git pull origin develop`
+   - **CRITICAL**: If starting new work, create branch FROM DEVELOP:
+     ```bash
+     git checkout develop && git pull origin develop
+     git checkout -b feature/properties-[description]
+     ```
+   - **WARNING**: Never create branches from main!
+   - Check if you need to pull latest from develop: `git merge origin/develop`
 
-3. **Review Project Updates**
+3. **Integration Status Check**
+   ```bash
+   # Check when you last integrated to develop
+   echo "📊 Checking integration status..."
+   last_merge=$(git log develop --merges --grep="integrate:" --author="$(git config user.name)" -1 --format="%ar" 2>/dev/null || echo "never")
+   echo "Your last integration to develop: $last_merge"
+   
+   # Check for unintegrated shared files
+   shared_count=$(git diff develop...HEAD --name-only 2>/dev/null | grep -E "(shared/|\.types\.ts|api/|frontend/src/types/)" | wc -l)
+   if [ $shared_count -gt 0 ]; then
+       echo "⚠️  You have $shared_count shared files not yet in develop!"
+       echo "Consider running integration soon."
+   fi
+   
+   # Time-based reminder
+   if [[ $last_merge == *"hours"* ]] && [[ ! $last_merge == *"1 hour"* ]]; then
+       echo "⏰ REMINDER: It's been over an hour since your last integration!"
+   fi
+   ```
+
+4. **Review Project Updates**
    - Check `/docs/tracking/completion-log.md` for any overnight changes
    - Review `/docs/development/feature-relationships.md` for dependency updates
    - Look for new GitHub issues tagged for Agent 1
 
-4. **Current Priorities**
+5. **Current Priorities**
    - Use `TodoRead` to see your current tasks
    - Check if any todos were added by other agents
    - Identify any blockers that may have been resolved
 
-5. **Development Environment**
+6. **Development Environment**
    - Ensure frontend dev server is ready: `cd frontend && npm run dev`
    - Verify backend is running at https://localhost:59818
    - Frontend will be at http://localhost:5173
