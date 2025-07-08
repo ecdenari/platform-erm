@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using PlatformERM.Application.Common.Interfaces;
 using PlatformERM.Domain.Entities;
 using PlatformERM.Shared.DTOs.Tenants;
@@ -10,16 +9,16 @@ public class TenantService : ITenantService
 {
     private readonly ITenantRepository _tenantRepository;
     private readonly IMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ICurrentTenantService _currentTenantService;
 
     public TenantService(
         ITenantRepository tenantRepository, 
         IMapper mapper,
-        IHttpContextAccessor httpContextAccessor)
+        ICurrentTenantService currentTenantService)
     {
         _tenantRepository = tenantRepository;
         _mapper = mapper;
-        _httpContextAccessor = httpContextAccessor;
+        _currentTenantService = currentTenantService;
     }
 
     public async Task<IEnumerable<TenantDto>> GetAllAsync()
@@ -42,11 +41,10 @@ public class TenantService : ITenantService
 
     public async Task<TenantDto?> GetCurrentAsync()
     {
-        // Try to get tenant ID from header
-        var tenantIdHeader = _httpContextAccessor.HttpContext?.Request.Headers["X-Tenant-Id"].FirstOrDefault();
-        if (int.TryParse(tenantIdHeader, out var tenantId))
+        var tenantId = _currentTenantService.TenantId;
+        if (tenantId.HasValue)
         {
-            return await GetByIdAsync(tenantId);
+            return await GetByIdAsync(tenantId.Value);
         }
 
         // Try to get from subdomain or other context
