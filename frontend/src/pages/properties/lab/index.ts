@@ -1,0 +1,1 @@
+export { PropertyCreateLab } from './PropertyCreateLab'

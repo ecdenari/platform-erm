@@ -10,12 +10,14 @@ import {
   PropertyEditPage 
 } from './properties/pages'
 import { PropertyListLab } from './properties/components/PropertyListLab'
+import { PropertyCreateLab } from '../pages/properties/lab'
 import { 
   List, 
   Map, 
   BarChart3, 
   Settings,
-  Beaker 
+  Beaker,
+  FlaskConical 
 } from 'lucide-react'
 
 // Sub-navigation items for Properties module
@@ -44,6 +46,12 @@ const propertySubNavItems: SubNavItem[] = [
     href: '/properties/lab',
     icon: Beaker,
     description: 'Test component variants'
+  },
+  {
+    name: 'Create UI Lab',
+    href: '/properties/create-lab',
+    icon: FlaskConical,
+    description: 'Compare property creation UIs'
   },
   {
     name: 'Settings',
@@ -139,6 +147,7 @@ const Properties: React.FC = () => {
         <Route path="/map" element={<PropertiesMap />} />
         <Route path="/reports" element={<PropertiesReports />} />
         <Route path="/lab" element={<PropertyListLab />} />
+        <Route path="/create-lab" element={<PropertyCreateLab />} />
         <Route path="/settings" element={<PropertiesSettings />} />
       </Routes>
     </>
