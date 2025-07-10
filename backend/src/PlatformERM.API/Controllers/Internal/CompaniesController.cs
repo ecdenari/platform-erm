@@ -24,7 +24,7 @@ public class CompaniesController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var companies = await _context.Companies
-            .Where(c => c.IsActive)
+            .Where(c => !c.IsDeleted)
             .OrderBy(c => c.Name)
             .Select(c => new
             {
@@ -36,7 +36,7 @@ public class CompaniesController : ControllerBase
                 c.Phone,
                 c.Email,
                 c.Website,
-                c.IsActive,
+                c.IsDeleted,
                 c.CreatedAt,
                 c.UpdatedAt,
                 c.CreatedBy,
@@ -67,7 +67,7 @@ public class CompaniesController : ControllerBase
                 c.Phone,
                 c.Email,
                 c.Website,
-                c.IsActive,
+                c.IsDeleted,
                 c.CreatedAt,
                 c.UpdatedAt,
                 c.CreatedBy,

@@ -27,12 +27,11 @@ public static class SeedData
             {
                 TenantId = "demo",
                 Name = "Acme Landscaping Inc.",
-                LegalName = "Acme Landscaping Incorporated",
-                TaxId = "12-3456789",
+                Description = "Premier commercial landscaping services",
+                Address = "123 Main Street, Suite 100, Dallas, TX 75201",
                 Website = "https://acmelandscaping.com",
                 Phone = "(555) 123-4567",
                 Email = "info@acmelandscaping.com",
-                IsActive = true,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = "system"
             },
@@ -40,12 +39,11 @@ public static class SeedData
             {
                 TenantId = "demo",
                 Name = "Green Thumb Commercial Services",
-                LegalName = "Green Thumb Commercial Services LLC",
-                TaxId = "98-7654321",
+                Description = "Commercial property maintenance and landscaping",
+                Address = "456 Oak Avenue, Houston, TX 77002",
                 Website = "https://greenthumbcommercial.com",
                 Phone = "(555) 987-6543",
                 Email = "contact@greenthumbcommercial.com",
-                IsActive = true,
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = "system"
             }
