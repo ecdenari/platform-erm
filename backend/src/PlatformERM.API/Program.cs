@@ -148,6 +148,20 @@ try
             await tenantService.SetTenantAsync(tenantId);
             return Results.Ok(new { message = $"Switched to tenant: {tenantId}" });
         });
+
+        // Seed development data
+        using (var scope = app.Services.CreateScope())
+        {
+            try
+            {
+                await PlatformERM.Infrastructure.Persistence.SeedData.SeedDevelopmentData(scope.ServiceProvider);
+                Log.Information("Development data seeded successfully");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "An error occurred while seeding development data");
+            }
+        }
     }
 
     app.Run();

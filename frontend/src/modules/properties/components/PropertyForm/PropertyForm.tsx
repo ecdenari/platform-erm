@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Property, PropertyType, PropertyStatus, CreateProperty, UpdateProperty } from '../../types'
 import { useCreateProperty, useUpdateProperty } from '../../hooks'
+import { useCompanies } from '../../../companies/hooks/useCompanies'
 import { enterpriseTokens } from '../../../../styles/enterpriseTokens'
 
 interface PropertyFormProps {
@@ -18,6 +19,7 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
   const navigate = useNavigate()
   const createPropertyMutation = useCreateProperty()
   const updatePropertyMutation = useUpdateProperty()
+  const { data: companies, isLoading: companiesLoading } = useCompanies()
   const isEditing = !!property
 
   const [formData, setFormData] = useState<CreateProperty | UpdateProperty>({
@@ -49,10 +51,9 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
       newErrors.name = 'Property name is required'
     }
     
-    // Temporarily comment out company requirement for testing
-    // if (!formData.companyId || formData.companyId === 0) {
-    //   newErrors.companyId = 'Company is required'
-    // }
+    if (!formData.companyId || formData.companyId === 0) {
+      newErrors.companyId = 'Company is required'
+    }
     
     if (!formData.address?.street.trim()) {
       newErrors['address.street'] = 'Street address is required'
@@ -215,12 +216,14 @@ export const PropertyForm: React.FC<PropertyFormProps> = ({
                     className={`block w-full px-3 py-2 border rounded-md shadow-sm text-sm ${
                       errors.companyId ? 'border-red-300' : 'border-gray-300'
                     }`}
+                    disabled={companiesLoading}
                   >
                     <option value={0}>Select a company</option>
-                    <option value={1}>ABC Property Management</option>
-                    <option value={2}>Greenwood Properties LLC</option>
-                    <option value={3}>Industrial Management Corp</option>
-                    <option value={4}>Future Developments Inc</option>
+                    {companies?.map((company) => (
+                      <option key={company.id} value={company.id}>
+                        {company.name}
+                      </option>
+                    ))}
                   </select>
                   {errors.companyId && (
                     <p className="mt-1 text-sm text-red-600">{errors.companyId}</p>

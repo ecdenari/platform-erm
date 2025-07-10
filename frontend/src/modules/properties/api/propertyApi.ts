@@ -21,13 +21,13 @@ export const propertyApi = {
       if (filters.status) params.append('status', filters.status)
       if (filters.companyId) params.append('companyId', filters.companyId.toString())
       if (filters.sortBy) params.append('sortBy', filters.sortBy)
-      if (filters.sortOrder) params.append('sortOrder', filters.sortOrder)
+      if (filters.sortOrder) params.append('sortDescending', filters.sortOrder === 'desc' ? 'true' : 'false')
       if (filters.pageNumber) params.append('pageNumber', filters.pageNumber.toString())
       if (filters.pageSize) params.append('pageSize', filters.pageSize.toString())
     }
     
     const { data } = await apiClient.get<PropertyListResponse>(
-      `${PROPERTIES_BASE_URL}?${params.toString()}`
+      `${PROPERTIES_BASE_URL}/paged?${params.toString()}`
     )
     return data
   },
