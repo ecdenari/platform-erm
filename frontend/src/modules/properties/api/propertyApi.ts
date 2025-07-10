@@ -34,7 +34,7 @@ export const propertyApi = {
 
   // Get single property with full details
   getProperty: async (id: number): Promise<PropertyDetail> => {
-    const { data } = await apiClient.get<PropertyDetail>(`${PROPERTIES_BASE_URL}/${id}`)
+    const { data } = await apiClient.get<PropertyDetail>(`${PROPERTIES_BASE_URL}/${id}/details`)
     return data
   },
 

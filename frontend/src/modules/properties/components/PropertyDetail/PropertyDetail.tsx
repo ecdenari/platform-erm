@@ -186,12 +186,16 @@ export const PropertyDetail: React.FC<PropertyDetailProps> = ({ propertyId: prop
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Company</h3>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{property.company.name}</p>
-                  {property.company.phone && (
-                    <p className="text-sm text-gray-500 mt-1">{property.company.phone}</p>
-                  )}
-                  {property.company.email && (
-                    <p className="text-sm text-gray-500">{property.company.email}</p>
+                  <p className="text-sm font-medium text-gray-900">{property.companyName || 'No company assigned'}</p>
+                  {property.company && (
+                    <>
+                      {property.company.phone && (
+                        <p className="text-sm text-gray-500 mt-1">{property.company.phone}</p>
+                      )}
+                      {property.company.email && (
+                        <p className="text-sm text-gray-500">{property.company.email}</p>
+                      )}
+                    </>
                   )}
                 </div>
               </div>

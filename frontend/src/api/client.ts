@@ -20,12 +20,12 @@ api.interceptors.request.use(
     }
 
     // Add tenant header for development
-    const tenantId = localStorage.getItem('dev-tenant-id') || '1'
+    const tenantId = localStorage.getItem('dev-tenant-id') || 'demo'
     if (import.meta.env.DEV) {
       config.headers['X-Tenant-Id'] = tenantId
       // Also set a default tenant ID in localStorage for consistency
       if (!localStorage.getItem('dev-tenant-id')) {
-        localStorage.setItem('dev-tenant-id', '1')
+        localStorage.setItem('dev-tenant-id', 'demo')
       }
     }
 

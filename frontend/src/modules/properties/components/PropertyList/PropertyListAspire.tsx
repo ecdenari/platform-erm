@@ -68,7 +68,14 @@ export const PropertyListAspire: React.FC<PropertyListAspireProps> = ({
   }
 
   const getPropertyTypeLabel = (type: PropertyType) => {
-    return type.toUpperCase()
+    const labels: Record<PropertyType, string> = {
+      [PropertyType.Residential]: 'RESIDENTIAL',
+      [PropertyType.Commercial]: 'COMMERCIAL',
+      [PropertyType.Industrial]: 'INDUSTRIAL',
+      [PropertyType.Mixed]: 'MIXED',
+      [PropertyType.Vacant]: 'VACANT'
+    }
+    return labels[type] || 'UNKNOWN'
   }
 
   const renderProperty = (property: Property, isGrouped: boolean = false) => (

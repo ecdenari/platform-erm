@@ -1,19 +1,19 @@
 // Property-related types matching backend DTOs
 
 export enum PropertyType {
-  Residential = 'Residential',
-  Commercial = 'Commercial',
-  Industrial = 'Industrial',
-  Mixed = 'Mixed',
-  Vacant = 'Vacant'
+  Residential = 0,
+  Commercial = 1,
+  Industrial = 2,
+  Mixed = 3,
+  Vacant = 4
 }
 
 export enum PropertyStatus {
-  Active = 'Active',
-  Inactive = 'Inactive',
-  Pending = 'Pending',
-  Sold = 'Sold',
-  Archived = 'Archived'
+  Active = 0,
+  Inactive = 1,
+  Pending = 2,
+  Sold = 3,
+  Archived = 4
 }
 
 export enum ContactRole {
